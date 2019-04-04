@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">RandomMovie</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="tab_text_1">ПОДОБРАТЬ</string>
+    <string name="tab_text_2">ПОПУЛЯРНОЕ</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="genre">Жанр</string>
+    <string name="year">Год</string>
+    <string name="button_random">Подобрать</string>
+</resources>
