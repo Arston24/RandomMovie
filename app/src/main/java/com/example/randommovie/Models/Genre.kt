@@ -2,8 +2,7 @@ package ru.arston.randommovie.Models
 import com.google.gson.annotations.SerializedName
 import com.google.gson.annotations.Expose
 
-
-class Genre {
+class Genre{
 
     @SerializedName("genres")
     @Expose

@@ -17,6 +17,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+
         setSupportActionBar(toolbar)
         mSectionsPagerAdapter = SectionPagerAdapter(supportFragmentManager)
 
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.search) {
+
             return true
         }
 

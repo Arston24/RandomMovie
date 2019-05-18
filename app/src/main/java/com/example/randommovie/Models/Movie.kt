@@ -3,6 +3,7 @@ package ru.arston.randommovie.Models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+
 class Movie {
 
     @SerializedName("page")
