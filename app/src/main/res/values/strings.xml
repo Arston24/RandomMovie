@@ -10,4 +10,27 @@
     <string name="year">Год</string>
     <string name="button_random">Подобрать</string>
 
+    <string-array name="movie_genres">
+        <item>Жанр</item>
+        <item>Боевик</item>
+        <item>Приключения</item>
+        <item>Мультфильм</item>
+        <item>Комедия</item>
+        <item>Криминал</item>
+        <item>Документальный</item>
+        <item>Драма</item>
+        <item>Семейный</item>
+        <item>Фэнтези</item>
+        <item>История</item>
+        <item>Ужасы</item>
+        <item>Музыка</item>
+        <item>Детектив</item>
+        <item>Мелодрама</item>
+        <item>Фантастика</item>
+        <item>Телевизионный</item>
+        <item>Триллер</item>
+        <item>Военный</item>
+        <item>Вестерн</item>
+    </string-array>
+
 </resources>

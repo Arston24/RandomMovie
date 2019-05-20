@@ -40,6 +40,12 @@ interface Api {
                        @Query("region") region: String,
                        @Query("api_key") api_key: String): Deferred<Response<Movie>>
 
+    @GET("discover/movie?language=ru-Ru")
+    fun getWithoutGenre(@Query("primary_release_year") year: String,
+                       @Query("page") page: Int,
+                       @Query("region") region: String,
+                       @Query("api_key") api_key: String): Deferred<Response<Movie>>
+
 
     @GET("search/movie?language=ru-Ru")
     fun getMovieSearch(@Query("query") query: String, @Query("api_key") api_key: String): Deferred<Response<Movie>>

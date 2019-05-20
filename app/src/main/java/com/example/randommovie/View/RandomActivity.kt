@@ -37,20 +37,19 @@ class RandomActivity : Fragment() {
     lateinit var genreList: List<Genre.Attributes>
     lateinit var movieList: List<Movie.Result>
     var page: Int = 0
-    var coordinatesCardView: IntArray = intArrayOf(1, 2)
+    lateinit var ratingMovie: RatingBar
 
-    val genreArray = ArrayList<String>()
     val years = ArrayList<String>()
     val genreAll = mutableMapOf<Int, Int>()
     var genreID: Int = 0
-    lateinit var movieYear: String
+    var movieYear: String = "0"
 
     lateinit var buttonRandom: Button
     lateinit var cardView: CardView
     lateinit var imageView: ImageView
     lateinit var textView: TextView
 
-    var retrofit: Retrofit = Retrofit.Builder()
+    private var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(url)
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create())
@@ -59,13 +58,12 @@ class RandomActivity : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view: View = inflater.inflate(R.layout.fragment_random, container, false)
+
         buttonRandom = view.findViewById(R.id.button_random)
         cardView = view.findViewById(R.id.card_view)
-        buttonRandom.setOnClickListener {
-            cardView.visibility = view.visibility
-            cardView.getLocationOnScreen(coordinatesCardView)
-            buttonRandom.animate().translationY(cardView.translationY + 620)
+        ratingMovie = view.findViewById(R.id.movieRating)
 
+        buttonRandom.setOnClickListener {
             getMovie()
         }
 
@@ -77,18 +75,19 @@ class RandomActivity : Fragment() {
 
             override fun onResponse(call: Call<Genre>, response: Response<Genre>) {
                 genreList = response.body()?.genres!!
+                var j = 1
                 for (i in genreList.indices) {
-                    genreAll[i] = genreList[i].id!!
-                    genreArray.add(genreList[i].name!!)
+                    genreAll[j] = genreList[i].id!!
+                    j++
                 }
-                spinnerAdapter(genreArray)
+                spinnerAdapter()
             }
         })
 
-
+        years.clear()
         for (i in 1895..2019) years.add(i.toString())
         years.reverse()
-        //years.add(0,"Год")
+        years.add(0, "Год")
         val spinnerYear: Spinner = view!!.findViewById(R.id.spinner_year)
         spinnerYear.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, years)
         spinnerYear?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -101,6 +100,7 @@ class RandomActivity : Fragment() {
             }
         }
 
+        getMovie()
 
         return view
     }
@@ -123,33 +123,47 @@ class RandomActivity : Fragment() {
 
             }
 
-            Log.e("genre", genreID.toString())
-            Log.e("year", movieYear)
-            Log.e("page", page.toString())
-            Log.e("apiKey", apiKey)
-            val randomMovieRequest = apiService.getRandomMovie(genreID, movieYear, page, "US", apiKey)
-            try {
-                val response = randomMovieRequest.await()
-                if (response.isSuccessful) {
-                    val movieResponse = response.body()
-                    movieList = movieResponse?.results!!
-                    setAdapter()
+            if (genreID != 0) {
+                val randomMovieRequest = apiService.getRandomMovie(genreID, movieYear, page, "US", apiKey)
+                try {
+                    val response = randomMovieRequest.await()
+                    if (response.isSuccessful) {
+                        val movieResponse = response.body()
+                        movieList = movieResponse?.results!!
+                        setAdapter()
 
-                } else {
-                    Log.e("MainActivity ", response.errorBody().toString())
+                    } else {
+                        Log.e("MainActivity ", response.errorBody().toString())
+                    }
+                } catch (e: Exception) {
+
                 }
-            } catch (e: Exception) {
+            } else {
+                val movieRequest = apiService.getWithoutGenre(movieYear, page, "US", apiKey)
+                try {
+                    val response = movieRequest.await()
+                    if (response.isSuccessful) {
+                        val movieResponse = response.body()
+                        movieList = movieResponse?.results!!
+                        setAdapter()
 
+                    } else {
+                        Log.e("MainActivity ", response.errorBody().toString())
+                    }
+                } catch (e: Exception) {
+
+                }
             }
 
         }
 
     }
 
-    fun spinnerAdapter(list: ArrayList<String>) {
+    fun spinnerAdapter() {
 
         val spinnerGenre: Spinner = view!!.findViewById(R.id.spinner_genre)
-        spinnerGenre.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, list)
+        spinnerGenre.adapter =
+            ArrayAdapter.createFromResource(context, R.array.movie_genres, android.R.layout.simple_spinner_item)
 
         spinnerGenre?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -157,7 +171,9 @@ class RandomActivity : Fragment() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                genreID = genreAll[spinnerGenre.selectedItemPosition]!!
+                if (position == 0) {
+                    genreID = 0
+                } else genreID = genreAll[position]!!
             }
         }
     }
@@ -170,6 +186,7 @@ class RandomActivity : Fragment() {
             DiskCacheStrategy.ALL
         ).into(imageView)
         textView.text = movieList[r].title
+        ratingMovie.rating = (movieList[r].voteAverage!! /2).toFloat()
 
         cardView.setOnClickListener {
             val intent = Intent(activity, DetailsActivity::class.java)
