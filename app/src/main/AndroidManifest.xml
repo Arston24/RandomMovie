@@ -15,11 +15,11 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.example.randommovie.DetailsActivity">
-
+        <activity android:name="com.example.randommovie.View.SearchActivity">
         </activity>
-        <activity
-                android:name=".MainActivity">
+        <activity android:name="com.example.randommovie.DetailsActivity">
+        </activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
