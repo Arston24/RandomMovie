@@ -20,7 +20,6 @@ import ru.arston.randommovie.Models.Genre
 import ru.arston.randommovie.Models.Movie
 import java.util.*
 import android.content.Intent
-import com.example.randommovie.Adapters.MovieAdapter
 import com.example.randommovie.DetailsActivity
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Dispatchers
@@ -89,7 +88,7 @@ class RandomActivity : Fragment() {
         years.reverse()
         years.add(0, "Год")
         val spinnerYear: Spinner = view!!.findViewById(R.id.spinner_year)
-        spinnerYear.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, years)
+        spinnerYear.adapter = ArrayAdapter(context, R.layout.item_spinner, years)
         spinnerYear?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -109,21 +108,27 @@ class RandomActivity : Fragment() {
     private fun getMovie() {
 
         GlobalScope.launch(Dispatchers.Main) {
-            val allMovieRequest = apiService.getAllMovie(genreID, movieYear, "US", apiKey)
-            try {
-                val response = allMovieRequest.await()
-                if (response.isSuccessful) {
-                    page = (1..response.body()?.totalPages!!).random()
-
-
-                } else {
-                    Log.e("MainActivity ", response.errorBody().toString())
-                }
-            } catch (e: Exception) {
-
-            }
 
             if (genreID != 0) {
+                val allMovieRequest = apiService.getAllMovie(genreID, movieYear, "US", apiKey)
+                try {
+                    val response = allMovieRequest.await()
+                    if (response.isSuccessful) {
+                        if(response.body()?.totalPages!! <= 1000){
+                            page = (1..response.body()?.totalPages!!).random()
+                        } else page = (1..1000).random()
+
+
+                    } else {
+                        Log.e("MainActivity ", response.errorBody().toString())
+                    }
+                } catch (e: Exception) {
+
+                }
+
+                Log.e("Жанр ", genreID.toString())
+                Log.e("Год ", movieYear)
+                Log.e("Страница ", page.toString())
                 val randomMovieRequest = apiService.getRandomMovie(genreID, movieYear, page, "US", apiKey)
                 try {
                     val response = randomMovieRequest.await()
@@ -139,6 +144,26 @@ class RandomActivity : Fragment() {
 
                 }
             } else {
+                val allMovieRequest = apiService.getAllMovieWithoutGenre(movieYear, "US", apiKey)
+                try {
+                    val response = allMovieRequest.await()
+                    if (response.isSuccessful) {
+                        if(response.body()?.totalPages!! <= 1000){
+                            page = (1..response.body()?.totalPages!!).random()
+                        } else page = (1..1000).random()
+
+
+
+                    } else {
+                        Log.e("MainActivity ", response.errorBody().toString())
+                    }
+                } catch (e: Exception) {
+
+                }
+
+
+                Log.e("Год ", movieYear)
+                Log.e("Страница ", page.toString())
                 val movieRequest = apiService.getWithoutGenre(movieYear, page, "US", apiKey)
                 try {
                     val response = movieRequest.await()
@@ -163,7 +188,7 @@ class RandomActivity : Fragment() {
 
         val spinnerGenre: Spinner = view!!.findViewById(R.id.spinner_genre)
         spinnerGenre.adapter =
-            ArrayAdapter.createFromResource(context, R.array.movie_genres, android.R.layout.simple_spinner_item)
+            ArrayAdapter.createFromResource(context, R.array.movie_genres, R.layout.item_spinner)
 
         spinnerGenre?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {

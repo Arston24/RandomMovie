@@ -16,16 +16,20 @@ interface Api {
     fun getGenres(@Query("api_key") api_key: String): Call<Genre>
 
     @GET("discover/movie?language=ru-Ru")
-    fun getAllMovie(@Query("with_genres") genre: Int,
-                    @Query("primary_release_year") year: String,
-                    @Query("region") region: String,
-                    @Query("api_key") api_key: String): Deferred<Response<Movie>>
+    fun getAllMovie(
+        @Query("with_genres") genre: Int,
+        @Query("primary_release_year") year: String,
+        @Query("region") region: String,
+        @Query("api_key") api_key: String
+    ): Deferred<Response<Movie>>
 
-//    @GET("discover/movie?language=ru-Ru")
-//    fun getRandomMovie(@Query("with_genres") genre: Int,
-//                 @Query("primary_release_year") year: Int,
-//                 @Query("page") page: Int,
-//                 @Query("api_key") api_key: String): Call<Movie>
+    @GET("discover/movie?language=ru-Ru")
+    fun getAllMovieWithoutGenre(
+        @Query("primary_release_year") year: String,
+        @Query("region") region: String,
+        @Query("api_key") api_key: String
+    ): Deferred<Response<Movie>>
+
 
     @GET("movie/popular?language=ru-Ru")
     fun getPopularMovie(@Query("api_key") api_key: String): Deferred<Response<Movie>>
@@ -34,17 +38,21 @@ interface Api {
     fun getMovie(@Path("movie_id") movie_id: String, @Query("api_key") api_key: String): Deferred<Response<MovieDetails>>
 
     @GET("discover/movie?language=ru-Ru")
-    fun getRandomMovie(@Query("with_genres") genre: Int,
-                       @Query("primary_release_year") year: String,
-                       @Query("page") page: Int,
-                       @Query("region") region: String,
-                       @Query("api_key") api_key: String): Deferred<Response<Movie>>
+    fun getRandomMovie(
+        @Query("with_genres") genre: Int,
+        @Query("primary_release_year") year: String,
+        @Query("page") page: Int,
+        @Query("region") region: String,
+        @Query("api_key") api_key: String
+    ): Deferred<Response<Movie>>
 
     @GET("discover/movie?language=ru-Ru")
-    fun getWithoutGenre(@Query("primary_release_year") year: String,
-                       @Query("page") page: Int,
-                       @Query("region") region: String,
-                       @Query("api_key") api_key: String): Deferred<Response<Movie>>
+    fun getWithoutGenre(
+        @Query("primary_release_year") year: String,
+        @Query("page") page: Int,
+        @Query("region") region: String,
+        @Query("api_key") api_key: String
+    ): Deferred<Response<Movie>>
 
 
     @GET("search/movie?language=ru-Ru")

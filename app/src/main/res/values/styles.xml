@@ -13,14 +13,10 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
-    <style name="RatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">#FA0000</item>
-        <item name="colorControlActivated">#FA0000</item>
+    <style name="RatingBar" parent="Widget.AppCompat.RatingBar.Small">
+        <item name="colorControlNormal">@color/rating_bar</item>
+        <item name="colorControlActivated">@color/rating_bar</item>
     </style>
 
-    <style name="RatingBarYellow" parent="Theme.AppCompat">
-        <item name="colorControlNormal">#FFC107</item>
-        <item name="colorControlActivated">#FFC107</item>
-    </style>
 
 </resources>

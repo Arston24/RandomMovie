@@ -110,8 +110,8 @@
 
             <RatingBar
                     android:id="@+id/movieDetailsRating"
-                    style="@style/Widget.AppCompat.RatingBar.Small"
-                    android:theme="@style/RatingBarYellow"
+                    style="@style/RatingBar"
+                    android:theme="@style/RatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
