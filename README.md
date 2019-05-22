@@ -14,5 +14,5 @@ API_KEY находится в local.properties, можно получить на
 
 ## Скриншоты
 
-![screenshot of sample](https://pp.userapi.com/c851024/v851024311/1295ac/7XXM2XbrdP4.jpg) ![screenshot of sample](https://pp.userapi.com/c853628/v853628127/1847c/UTWrC7ISmbg.jpg)
+![screenshot of sample](https://pp.userapi.com/c851024/v851024311/1295d7/poxjqA0zsX0.jpg) ![screenshot of sample](https://pp.userapi.com/c853628/v853628127/1847c/UTWrC7ISmbg.jpg)
 
