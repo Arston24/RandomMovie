@@ -53,8 +53,7 @@
 
         <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" app:layout_constraintStart_toStartOf="@+id/reviewsLabel"
-                app:layout_constraintEnd_toStartOf="@+id/reviewsLabel">
+                android:layout_height="match_parent" >
             <ImageView
                     android:layout_width="50dp"
                     android:layout_height="63dp"
@@ -68,7 +67,7 @@
             <TextView
                     android:id="@+id/movieDetailsTitle"
                     android:layout_width="321dp"
-                    android:layout_height="35dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
                     android:textSize="24sp"
@@ -157,66 +156,42 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/movieDetailsGenres"/>
 
+
             <HorizontalScrollView
-                    android:id="@+id/movieTrailersContainer"
+                    android:id="@+id/movieCastContainer"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="106dp"
+                    android:visibility="gone"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="8dp"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/trailersLabel">
+                    app:layout_constraintTop_toBottomOf="@+id/castLabel">
 
                 <LinearLayout
-                        android:id="@+id/movieTrailers"
+                        android:id="@+id/movieCast"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"/>
             </HorizontalScrollView>
 
             <TextView
-                    android:id="@+id/trailersLabel"
+                    android:id="@+id/castLabel"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginTop="32dp"
-                    android:text="Trailers"
-                    android:textSize="24sp"
                     android:visibility="gone"
+                    android:layout_marginTop="32dp"
+                    android:textColor="@color/white"
+                    android:text="В главных ролях"
+                    android:textSize="20sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/movieDetailsOverview"/>
 
-            <TextView
-                    android:id="@+id/reviewsLabel"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Reviews"
-                    android:textSize="24sp"
-                    android:visibility="gone"
-                    android:textColor="@color/white"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/movieTrailersContainer"/>
-
-            <LinearLayout
-                    android:id="@+id/movieReviews"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical"
-                    android:textColor="@color/white"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/reviewsLabel"/>
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>

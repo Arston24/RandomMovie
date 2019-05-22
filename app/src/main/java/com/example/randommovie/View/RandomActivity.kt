@@ -104,17 +104,21 @@ class RandomActivity : Fragment() {
         return view
     }
 
-
+    /**
+     * Метод отправляет запрос на сервер и, получив все фильмы,
+     * генерирует номер случайной Json-страницы (page) из всех полученных, затем отправлет новый запрос,
+     * передав в качестве одного из параметров запроса номер сгенерированной страницы.
+     */
     private fun getMovie() {
 
         GlobalScope.launch(Dispatchers.Main) {
-
+            // Если выбран какой-либо жанр
             if (genreID != 0) {
                 val allMovieRequest = apiService.getAllMovie(genreID, movieYear, "US", apiKey)
                 try {
                     val response = allMovieRequest.await()
                     if (response.isSuccessful) {
-                        if(response.body()?.totalPages!! <= 1000){
+                        if (response.body()?.totalPages!! <= 1000) {
                             page = (1..response.body()?.totalPages!!).random()
                         } else page = (1..1000).random()
 
@@ -126,9 +130,6 @@ class RandomActivity : Fragment() {
 
                 }
 
-                Log.e("Жанр ", genreID.toString())
-                Log.e("Год ", movieYear)
-                Log.e("Страница ", page.toString())
                 val randomMovieRequest = apiService.getRandomMovie(genreID, movieYear, page, "US", apiKey)
                 try {
                     val response = randomMovieRequest.await()
@@ -143,15 +144,15 @@ class RandomActivity : Fragment() {
                 } catch (e: Exception) {
 
                 }
+                // Если жанр не выбран
             } else {
                 val allMovieRequest = apiService.getAllMovieWithoutGenre(movieYear, "US", apiKey)
                 try {
                     val response = allMovieRequest.await()
                     if (response.isSuccessful) {
-                        if(response.body()?.totalPages!! <= 1000){
+                        if (response.body()?.totalPages!! <= 1000) {
                             page = (1..response.body()?.totalPages!!).random()
                         } else page = (1..1000).random()
-
 
 
                     } else {
@@ -161,9 +162,6 @@ class RandomActivity : Fragment() {
 
                 }
 
-
-                Log.e("Год ", movieYear)
-                Log.e("Страница ", page.toString())
                 val movieRequest = apiService.getWithoutGenre(movieYear, page, "US", apiKey)
                 try {
                     val response = movieRequest.await()
@@ -203,6 +201,9 @@ class RandomActivity : Fragment() {
         }
     }
 
+    /**
+     * Функция заполняет данными CardView
+     */
     private fun setAdapter() {
         val r = (0..movieList.size).random()
         imageView = view!!.findViewById(R.id.card_image)
@@ -211,7 +212,7 @@ class RandomActivity : Fragment() {
             DiskCacheStrategy.ALL
         ).into(imageView)
         textView.text = movieList[r].title
-        ratingMovie.rating = (movieList[r].voteAverage!! /2).toFloat()
+        ratingMovie.rating = (movieList[r].voteAverage!! / 2).toFloat()
 
         cardView.setOnClickListener {
             val intent = Intent(activity, DetailsActivity::class.java)

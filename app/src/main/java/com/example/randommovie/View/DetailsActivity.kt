@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.randommovie.Database.Movie
 import com.example.randommovie.Database.MovieDatabase
+import com.example.randommovie.Models.Cast
 import com.example.randommovie.Models.MovieDetails
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +24,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.arston.randommovie.API.Api
 import ru.arston.randommovie.BuildConfig
 import ru.arston.randommovie.R
+import kotlinx.android.synthetic.main.activity_details.*
+
 
 class DetailsActivity : AppCompatActivity() {
     lateinit var titleText: TextView
@@ -37,6 +41,7 @@ class DetailsActivity : AppCompatActivity() {
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
     lateinit var movieList: List<Movie>
+    lateinit var castList: List<Cast>
     private lateinit var movieID: String
 
 
@@ -54,15 +59,17 @@ class DetailsActivity : AppCompatActivity() {
         title = intent.extras.getString("title")
 
 
-
         val db = Room.databaseBuilder(this, MovieDatabase::class.java, "descriptionMovie")
             .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
             .build()
         movieList = db.movieDao().getAll()
 
-        if(movieList.isNotEmpty()){
-            for(i in movieList.indices) {
+
+        // Если база данных содержит какие-либо фильмы,
+        // то проверяется есть ли необходимый фильм среди них
+        if (movieList.isNotEmpty()) {
+            for (i in movieList.indices) {
                 if (movieList[i].title == title) {
                     pressed = true
                     bookmarkIcon.setOnClickListener {
@@ -73,16 +80,18 @@ class DetailsActivity : AppCompatActivity() {
                             bookmarkIcon, "Удалено из избранного",
                             Snackbar.LENGTH_SHORT
                         ).show()
-                        db.movieDao().delete(Movie(
-                            movieList[i].uid,
-                            movieList[i].title,
-                            movieList[i].posterPath,
-                            movieList[i].backdropPath,
-                            movieList[i].rating,
-                            movieList[i].overview,
-                            movieList[i].releaseDate,
-                            movieList[i].genre
-                        ))
+                        db.movieDao().delete(
+                            Movie(
+                                movieList[i].uid,
+                                movieList[i].title,
+                                movieList[i].posterPath,
+                                movieList[i].backdropPath,
+                                movieList[i].rating,
+                                movieList[i].overview,
+                                movieList[i].releaseDate,
+                                movieList[i].genre
+                            )
+                        )
 
                     }
 
@@ -98,16 +107,19 @@ class DetailsActivity : AppCompatActivity() {
                     overviewText.text = movieList[i].overview
 
 
-
-                }  else getMovie()
+                } else getMovie()
             }
-        }
-         else getMovie()
+        } else getMovie()
 
 
-        }
+    }
 
-    private fun getMovie(){
+    /**
+     * Метод отправляет запрос на сервер и получает необходимый фильм
+     *
+     */
+
+    private fun getMovie() {
 
         var retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(url)
@@ -138,8 +150,11 @@ class DetailsActivity : AppCompatActivity() {
                         ).into(backdropImage)
                     overviewText.text = movieResponse.overview
 
+
+                    // Если нажата кнопка "Добавить в избранное", то выполняется одно из действий:
+                    // добавление в базу данных или удаление из неё
                     bookmarkIcon.setOnClickListener {
-                        if(!pressed ){
+                        if (!pressed) {
                             pressed = true
                             bookmarkIcon.setImageResource(R.mipmap.bookmark_pressed)
                             Snackbar.make(
@@ -160,24 +175,25 @@ class DetailsActivity : AppCompatActivity() {
                                 )
                             )
 
-                        }
-                        else {
+                        } else {
                             Snackbar.make(
                                 bookmarkIcon, "Удалено из избранного",
                                 Snackbar.LENGTH_SHORT
                             ).show()
                             pressed = false
                             bookmarkIcon.setImageResource(R.mipmap.bookmark_unpressed)
-                            db.movieDao().delete(Movie(
-                                movieResponse.id,
-                                movieResponse.title,
-                                movieResponse.poster_path,
-                                movieResponse.backdrop_path,
-                                movieResponse.vote_average,
-                                movieResponse.overview,
-                                movieResponse.release_date,
-                                movieResponse.genres[0].name
-                            ))
+                            db.movieDao().delete(
+                                Movie(
+                                    movieResponse.id,
+                                    movieResponse.title,
+                                    movieResponse.poster_path,
+                                    movieResponse.backdrop_path,
+                                    movieResponse.vote_average,
+                                    movieResponse.overview,
+                                    movieResponse.release_date,
+                                    movieResponse.genres[0].name
+                                )
+                            )
                         }
                     }
 
@@ -187,6 +203,31 @@ class DetailsActivity : AppCompatActivity() {
             } catch (e: Exception) {
 
             }
+
+            val castMovie = apiService.getMovieCast(movieID, apiKey)
+            try {
+                val response = castMovie.await()
+                if (response.isSuccessful) {
+
+                    val parent: View = layoutInflater.inflate(R.layout.cast_item, movieCast, false)
+                    val photoCast: ImageView = parent.findViewById(R.id.cast_photo)
+                    val textCast: TextView = parent.findViewById(R.id.cast_text)
+                    textCast.text = "12121212"
+                    Glide.with(this@DetailsActivity)
+                        .load("http://image.tmdb.org/t/p/w500" + response.body()?.result?.get(0)?.profilePath)
+                        .diskCacheStrategy(
+                            DiskCacheStrategy.ALL
+                        ).into(photoCast)
+                    Log.e("MainActivity ", response?.body()?.result?.get(0)?.character)
+
+                } else {
+                    Log.e("MainActivity ", response.errorBody().toString())
+                }
+            } catch (e: Exception) {
+
+            }
+
+
         }
     }
 

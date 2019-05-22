@@ -8,23 +8,26 @@
         tools:context="com.example.randommovie.View.SearchActivity"
         android:orientation="vertical">
 
+
     <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/textResponse"
             android:layout_marginTop="250dp"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="24dp"
-            tools:ignore="MissingConstraints"/>
+            tools:ignore="MissingConstraints" app:layout_constraintTop_toTopOf="@+id/appbar"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/movies_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="0dp"
+            android:layout_height="0dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
     </android.support.v7.widget.RecyclerView>
-
 
 
 </android.support.constraint.ConstraintLayout>

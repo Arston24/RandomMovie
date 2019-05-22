@@ -8,6 +8,7 @@ import android.support.v7.widget.SearchView
 import android.view.Menu
 import com.example.randommovie.View.SearchActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.toolbar
 import ru.arston.randommovie.Adapters.SectionPagerAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.options_menu, menu)
         val searchItem = menu.findItem(R.id.search)
-        if(searchItem != null){
+        if (searchItem != null) {
             val searchView = searchItem.actionView as android.widget.SearchView
             searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener,
                 SearchView.OnQueryTextListener {
@@ -54,4 +55,5 @@ class MainActivity : AppCompatActivity() {
         return true
 
     }
+
 }

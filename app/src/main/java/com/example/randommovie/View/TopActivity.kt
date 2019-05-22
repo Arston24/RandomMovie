@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.arston.randommovie.API.Api
 import ru.arston.randommovie.Models.Movie
 
-class TopActivity : Fragment(){
+class TopActivity : Fragment() {
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
 
@@ -33,25 +33,27 @@ class TopActivity : Fragment(){
     var apiService: Api = retrofit.create(Api::class.java)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view: View =  inflater.inflate(R.layout.fragment_top, container, false)
+        var view: View = inflater.inflate(R.layout.fragment_top, container, false)
 
         val movieRecycler: RecyclerView = view.findViewById(R.id.movies_list)
         movieRecycler.layoutManager = LinearLayoutManager(context)
 
+        // Отправка запроса на сервер и получение списка
+        // самых популярных фильмов
         GlobalScope.launch(Dispatchers.Main) {
             val popularMovieRequest = apiService.getPopularMovie(apiKey)
             try {
                 val response = popularMovieRequest.await()
-                if(response.isSuccessful){
+                if (response.isSuccessful) {
                     val movieResponse = response.body()
                     movieList = movieResponse?.results!!
                     val movieAdapter = MovieAdapter(movieList)
                     movieRecycler.adapter = movieAdapter
 
-                }else{
-                    Log.e("MainActivity ",response.errorBody().toString())
+                } else {
+                    Log.e("MainActivity ", response.errorBody().toString())
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
 
             }
         }
