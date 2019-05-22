@@ -1,5 +1,5 @@
 # RandomMovie
-
+Позволяет сгенерировать случайный фильм, найти любой фильм в базе данных The Movie Database. 
 API_KEY находится в local.properties, можно получить на [themoviedb.org](https://www.themoviedb.org)
 
 ## Презентация
