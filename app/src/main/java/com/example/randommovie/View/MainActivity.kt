@@ -21,14 +21,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        val actionBar = actionBar
-        val searchView = SearchView(this)
-        actionBar!!.customView = searchView
-        actionBar.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-        searchView.setQuery("test", true)
-        searchView.isFocusable = true
-        searchView.isIconified = false
-        searchView.requestFocusFromTouch()
+//        val actionBar = actionBar
+//        val searchView = SearchView(this)
+//        actionBar!!.customView = searchView
+//        actionBar.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+//        searchView.setQuery("test", true)
+//        searchView.isFocusable = true
+//        searchView.isIconified = false
+//        searchView.requestFocusFromTouch()
 
         setSupportActionBar(toolbar)
         mSectionsPagerAdapter = SectionPagerAdapter(supportFragmentManager)
