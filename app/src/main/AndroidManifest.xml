@@ -20,8 +20,10 @@
         <activity android:name="com.example.randommovie.DetailsActivity">
         </activity>
         <activity android:name=".MainActivity"
-                  android:windowSoftInputMode="adjustResize"
-        >
+                  android:windowSoftInputMode="adjustResize">
+
+            <meta-data android:name="android.app.searchable"
+                       android:resource="@xml/searchable" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

@@ -33,10 +33,11 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        movieName = intent.extras.getString("MovieName")
-        textResponse = findViewById(R.id.textResponse)
-        getMovie()
+//        movieName = intent.extras.getString("MovieName")
+//        textResponse = findViewById(R.id.textResponse)
+//        getMovie()
     }
+
 
     /**
      * Метод отправляет запрос на сервер
