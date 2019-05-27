@@ -25,16 +25,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-//        val actionBar = actionBar
-//        val searchView = SearchView(this)
-//        actionBar!!.customView = searchView
-//        actionBar.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-//        searchView.setQuery("test", true)
-//        searchView.isFocusable = true
-//        searchView.isIconified = false
-//        searchView.requestFocusFromTouch()
-
         setSupportActionBar(toolbar)
         mSectionsPagerAdapter = SectionPagerAdapter(supportFragmentManager)
 
@@ -58,40 +48,40 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.options_menu, menu)
-        val searchItem = menu.findItem(R.id.search)
-        if (searchItem != null) {
-
-            val searchView: SearchView = searchItem.actionView as SearchView
-            val searchManager: SearchManager =
-                this@MainActivity.getSystemService(Context.SEARCH_SERVICE) as SearchManager
-            searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(
-                    ComponentName(
-                        applicationContext,
-                        MainActivity::class.java!!
-                    )
-                )
-            )
-
-            searchView.onActionViewExpanded()
-            searchView.requestFocus()
-            searchView.setOnQueryTextListener(object : android.support.v7.widget.SearchView(this@MainActivity),
-                SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    val intent = Intent(this@MainActivity, SearchActivity::class.java)
-                    intent.putExtra("MovieName", query)
-                    this@MainActivity.startActivity(intent)
-                    return true
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-
-                    return true
-                }
-
-            })
-
-        }
+//        val searchItem = menu.findItem(R.id.search)
+//        if (searchItem != null) {
+//
+//            val searchView: SearchView = searchItem.actionView as SearchView
+//            val searchManager: SearchManager =
+//                this@MainActivity.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+//            searchView.setSearchableInfo(
+//                searchManager.getSearchableInfo(
+//                    ComponentName(
+//                        applicationContext,
+//                        MainActivity::class.java!!
+//                    )
+//                )
+//            )
+//
+//            searchView.onActionViewExpanded()
+//            searchView.requestFocus()
+//            searchView.setOnQueryTextListener(object : android.support.v7.widget.SearchView(this@MainActivity),
+//                SearchView.OnQueryTextListener {
+//                override fun onQueryTextSubmit(query: String?): Boolean {
+//                    val intent = Intent(this@MainActivity, SearchActivity::class.java)
+//                    intent.putExtra("MovieName", query)
+//                    this@MainActivity.startActivity(intent)
+//                    return true
+//                }
+//
+//                override fun onQueryTextChange(newText: String?): Boolean {
+//
+//                    return true
+//                }
+//
+//            })
+//
+//        }
 
         return true
 

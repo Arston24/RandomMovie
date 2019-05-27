@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
+import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import com.example.randommovie.Adapters.MovieAdapter
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -32,6 +35,8 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        setUpToolbar()
 
 //        movieName = intent.extras.getString("MovieName")
 //        textResponse = findViewById(R.id.textResponse)
@@ -78,6 +83,38 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun setUpToolbar() {
+        val mToolbar: Toolbar = findViewById(R.id.toolbarSearch)
+        mToolbar.title = ""
+        this.setSupportActionBar(mToolbar)
+
+        val actionBar = supportActionBar
+        actionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.mipmap.back)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.options_menu, menu)
+        val searchItem = menu?.findItem(R.id.search)
+        if (searchItem != null) {
+            searchItem.expandActionView()
+        }
+        return super.onCreateOptionsMenu(menu)
     }
 
 }
