@@ -1,5 +1,6 @@
 package com.example.randommovie.View
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -10,10 +11,13 @@ import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import com.example.randommovie.Adapters.MovieAdapter
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -23,6 +27,9 @@ import ru.arston.randommovie.API.Api
 import ru.arston.randommovie.BuildConfig
 import ru.arston.randommovie.Models.Movie
 import ru.arston.randommovie.R
+import ru.arston.randommovie.MainActivity
+import android.support.v4.view.MenuItemCompat
+
 
 class SearchActivity : AppCompatActivity() {
     private val apiKey: String = BuildConfig.TMDB_API_KEY
@@ -37,6 +44,8 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         setUpToolbar()
+        //setSupportActionBar(toolbarSearch)
+
 
 //        movieName = intent.extras.getString("MovieName")
 //        textResponse = findViewById(R.id.textResponse)
@@ -90,30 +99,36 @@ class SearchActivity : AppCompatActivity() {
         mToolbar.title = ""
         this.setSupportActionBar(mToolbar)
 
-        val actionBar = supportActionBar
-        actionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.mipmap.back)
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+//        val actionBar = supportActionBar
+//        actionBar?.apply {
+//            setDisplayHomeAsUpEnabled(true)
+//            setHomeAsUpIndicator(R.mipmap.back)
+//        }
     }
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.options_menu, menu)
         val searchItem = menu?.findItem(R.id.search)
-        if (searchItem != null) {
-            searchItem.expandActionView()
-        }
+
+        val searchMenuItem = menu?.findItem(R.id.search)
+        searchMenuItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+
+            override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                // Do whatever you need
+                return true // KEEP IT TO TRUE OR IT DOESN'T OPEN !!
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                
+                onBackPressed()
+                return true // OR FALSE IF YOU DIDN'T WANT IT TO CLOSE!
+            }
+        })
+
+        searchItem?.expandActionView()
+
+
         return super.onCreateOptionsMenu(menu)
     }
 
