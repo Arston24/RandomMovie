@@ -1,6 +1,7 @@
 package com.example.randommovie.View
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -18,9 +19,6 @@ import com.example.randommovie.Adapters.MovieAdapter
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.arston.randommovie.API.Api
@@ -29,6 +27,10 @@ import ru.arston.randommovie.Models.Movie
 import ru.arston.randommovie.R
 import ru.arston.randommovie.MainActivity
 import android.support.v4.view.MenuItemCompat
+import kotlinx.coroutines.*
+import android.support.v4.content.ContextCompat.getSystemService
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 
 
 class SearchActivity : AppCompatActivity() {
@@ -47,8 +49,8 @@ class SearchActivity : AppCompatActivity() {
         //setSupportActionBar(toolbarSearch)
 
 
-//        movieName = intent.extras.getString("MovieName")
-//        textResponse = findViewById(R.id.textResponse)
+         //title = intent.extras.getString("MovieName")
+         textResponse = findViewById(R.id.textResponse)
 //        getMovie()
     }
 
@@ -57,7 +59,7 @@ class SearchActivity : AppCompatActivity() {
      * Метод отправляет запрос на сервер
      * с названием фильма в качестве параметра запроса
      */
-    private fun getMovie() {
+    private fun getMovie(title: String) {
         var retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create())
@@ -69,7 +71,7 @@ class SearchActivity : AppCompatActivity() {
         movieRecycler.layoutManager = LinearLayoutManager(this)
 
         GlobalScope.launch(Dispatchers.Main) {
-            val popularMovieRequest = apiService.getMovieSearch(movieName, apiKey)
+            val popularMovieRequest = apiService.getMovieSearch(title, apiKey)
             try {
                 val response = popularMovieRequest.await()
                 if (response.isSuccessful) {
@@ -99,18 +101,13 @@ class SearchActivity : AppCompatActivity() {
         mToolbar.title = ""
         this.setSupportActionBar(mToolbar)
 
-//        val actionBar = supportActionBar
-//        actionBar?.apply {
-//            setDisplayHomeAsUpEnabled(true)
-//            setHomeAsUpIndicator(R.mipmap.back)
-//        }
     }
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.options_menu, menu)
         val searchItem = menu?.findItem(R.id.search)
-
+        searchItem?.expandActionView()
         val searchMenuItem = menu?.findItem(R.id.search)
         searchMenuItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
 
@@ -120,13 +117,31 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                
                 onBackPressed()
-                return true // OR FALSE IF YOU DIDN'T WANT IT TO CLOSE!
+                return false // OR FALSE IF YOU DIDN'T WANT IT TO CLOSE!
             }
         })
 
-        searchItem?.expandActionView()
+        var searchView: SearchView = searchItem?.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+
+            private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
+            private val searchJob: Job? = null
+
+
+            override fun onQueryTextSubmit(title: String): Boolean {
+                getMovie(title)
+                searchView.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(title: String): Boolean {
+                return true
+            }
+
+        }
+        )
+
 
 
         return super.onCreateOptionsMenu(menu)
