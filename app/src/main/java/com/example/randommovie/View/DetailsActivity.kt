@@ -214,16 +214,21 @@ class DetailsActivity : AppCompatActivity() {
                         castLabel.visibility = View.VISIBLE
 
                         for (i in castList.indices) {
-                            val parent: View = layoutInflater.inflate(R.layout.cast_item, movieCast, false)
-                            val photoCast: ImageView = parent.findViewById(R.id.cast_photo)
-                            val textCast: TextView = parent.findViewById(R.id.cast_text)
-                            Glide.with(this@DetailsActivity)
-                                .load("http://image.tmdb.org/t/p/w500" + response.body()?.result?.get(i)?.profilePath)
-                                .diskCacheStrategy(
-                                    DiskCacheStrategy.ALL
-                                ).into(photoCast)
-                            movieCast.addView(parent)
-                            Log.e("MainActivity ", response?.body()?.result?.get(0)?.character)
+                            if (castList[i].profilePath != null) {
+                                val parent: View = layoutInflater.inflate(R.layout.cast_item, movieCast, false)
+                                val photoCast: ImageView = parent.findViewById(R.id.cast_photo)
+                                val nameCast: TextView = parent.findViewById(R.id.cast_name)
+                                val characterCast: TextView = parent.findViewById(R.id.cast_character)
+                                nameCast.text = castList[i].name
+                                characterCast.text = castList[i].character
+                                Glide.with(this@DetailsActivity)
+                                    .load("http://image.tmdb.org/t/p/w500" + response.body()?.result?.get(i)?.profilePath)
+                                    .diskCacheStrategy(
+                                        DiskCacheStrategy.ALL
+                                    ).into(photoCast)
+                                movieCast.addView(parent)
+                                Log.e("MainActivity ", response?.body()?.result?.get(0)?.character)
+                            }
                         }
                     }
 
