@@ -145,7 +145,7 @@ class SearchActivity : AppCompatActivity() {
                 searchJob?.cancel()
                 searchJob = coroutineScope.launch {
                     title?.let {
-                        delay(1)
+                        delay(500)
                         if (it.isEmpty()) {
                             textResponse.text = "Ничего не найдено!"
                         } else {
