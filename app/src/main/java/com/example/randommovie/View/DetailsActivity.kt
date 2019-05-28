@@ -41,7 +41,7 @@ class DetailsActivity : AppCompatActivity() {
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
     lateinit var movieList: List<Movie>
-    lateinit var castList: List<Cast.Result>
+    private var castList: List<Cast.Result> = listOf()
     private lateinit var movieID: String
 
 
@@ -107,10 +107,10 @@ class DetailsActivity : AppCompatActivity() {
                     overviewText.text = movieList[i].overview
 
 
-                } else getMovie()
+                }
             }
-        } else getMovie()
-
+        }
+        getMovie()
 
     }
 
@@ -120,6 +120,7 @@ class DetailsActivity : AppCompatActivity() {
      */
 
     private fun getMovie() {
+
 
         var retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(url)
@@ -135,6 +136,8 @@ class DetailsActivity : AppCompatActivity() {
             .build()
 
         GlobalScope.launch(Dispatchers.Main) {
+
+
             val detailsMovie = apiService.getMovie(movieID, apiKey)
             try {
                 val response = detailsMovie.await()
@@ -204,38 +207,43 @@ class DetailsActivity : AppCompatActivity() {
 
             }
 
+
             val castMovie = apiService.getMovieCast(movieID, apiKey)
             try {
-                val response = castMovie.await()
-                if (response.isSuccessful) {
-                    val castLabel = findViewById<TextView>(R.id.castLabel)
-                    castList = response.body()?.result!!
-                    if (castList.isNotEmpty()) {
-                        castLabel.visibility = View.VISIBLE
+                if (castList.isNullOrEmpty()) {
+                    val response = castMovie.await()
+                    if (response.isSuccessful) {
+                        val castLabel = findViewById<TextView>(R.id.castLabel)
+                        castList = response.body()?.result!!
+                        if (castList.isNotEmpty()) {
+                            castLabel.visibility = View.VISIBLE
 
-                        for (i in castList.indices) {
-                            if (castList[i].profilePath != null) {
-                                val parent: View = layoutInflater.inflate(R.layout.cast_item, movieCast, false)
-                                val photoCast: ImageView = parent.findViewById(R.id.cast_photo)
-                                val nameCast: TextView = parent.findViewById(R.id.cast_name)
-                                val characterCast: TextView = parent.findViewById(R.id.cast_character)
+                            for (i in castList.indices) {
+
+                                var parent: View = layoutInflater.inflate(R.layout.cast_item, movieCast, false)
+                                var photoCast: ImageView = parent.findViewById(R.id.cast_photo)
+                                var nameCast: TextView = parent.findViewById(R.id.cast_name)
+                                var characterCast: TextView = parent.findViewById(R.id.cast_character)
                                 nameCast.text = castList[i].name
                                 characterCast.text = castList[i].character
+
                                 Glide.with(this@DetailsActivity)
-                                    .load("http://image.tmdb.org/t/p/w500" + response.body()?.result?.get(i)?.profilePath)
+                                    .load("http://image.tmdb.org/t/p/w500" + castList[i].profilePath)
                                     .diskCacheStrategy(
                                         DiskCacheStrategy.ALL
                                     ).into(photoCast)
                                 movieCast.addView(parent)
-                                Log.e("MainActivity ", response?.body()?.result?.get(0)?.character)
+                                Log.e("MainActivity ", castList.indices.toString())
                             }
                         }
-                    }
 
-                } else {
-                    Log.e("MainActivity ", response.errorBody().toString())
+
+                    } else {
+                        Log.e("MainActivity ", response.errorBody().toString())
+                    }
                 }
             } catch (e: Exception) {
+
 
             }
 
