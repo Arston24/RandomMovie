@@ -41,7 +41,7 @@ class DetailsActivity : AppCompatActivity() {
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
     lateinit var movieList: List<Movie>
-    lateinit var castList: List<Cast>
+    lateinit var castList: List<Cast.Result>
     private lateinit var movieID: String
 
 
@@ -208,17 +208,20 @@ class DetailsActivity : AppCompatActivity() {
             try {
                 val response = castMovie.await()
                 if (response.isSuccessful) {
+                    castList = response.body()?.result!!
 
-                    val parent: View = layoutInflater.inflate(R.layout.cast_item, movieCast, false)
-                    val photoCast: ImageView = parent.findViewById(R.id.cast_photo)
-                    val textCast: TextView = parent.findViewById(R.id.cast_text)
-                    textCast.text = "12121212"
-                    Glide.with(this@DetailsActivity)
-                        .load("http://image.tmdb.org/t/p/w500" + response.body()?.result?.get(0)?.profilePath)
-                        .diskCacheStrategy(
-                            DiskCacheStrategy.ALL
-                        ).into(photoCast)
-                    Log.e("MainActivity ", response?.body()?.result?.get(0)?.character)
+                    for (i in castList.indices) {
+                        val parent: View = layoutInflater.inflate(R.layout.cast_item, movieCast, false)
+                        val photoCast: ImageView = parent.findViewById(R.id.cast_photo)
+                        val textCast: TextView = parent.findViewById(R.id.cast_text)
+                        Glide.with(this@DetailsActivity)
+                            .load("http://image.tmdb.org/t/p/w500" + response.body()?.result?.get(i)?.profilePath)
+                            .diskCacheStrategy(
+                                DiskCacheStrategy.ALL
+                            ).into(photoCast)
+                        movieCast.addView(parent)
+                        Log.e("MainActivity ", response?.body()?.result?.get(0)?.character)
+                    }
 
                 } else {
                     Log.e("MainActivity ", response.errorBody().toString())

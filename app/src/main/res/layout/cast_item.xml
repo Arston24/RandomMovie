@@ -7,7 +7,7 @@
 
     <ImageView
             android:id="@+id/cast_photo"
-            android:layout_width="150dp"
+            android:layout_width="100dp"
             android:layout_height="150dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"

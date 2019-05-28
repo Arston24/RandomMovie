@@ -161,8 +161,7 @@
             <HorizontalScrollView
                     android:id="@+id/movieCastContainer"
                     android:layout_width="0dp"
-                    android:layout_height="106dp"
-                    android:visibility="gone"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="8dp"
@@ -184,7 +183,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:visibility="gone"
                     android:layout_marginTop="32dp"
                     android:textColor="@color/white"
                     android:text="В главных ролях"
