@@ -82,7 +82,7 @@ class SearchActivity : AppCompatActivity() {
                         val movieAdapter = MovieAdapter(movieList)
                         movieRecycler.adapter = movieAdapter
                     } else {
-                        textResponse.text = "Ничего не найдено!"
+                        //textResponse.text = "Ничего не найдено!"
 
                     }
 
@@ -109,6 +109,12 @@ class SearchActivity : AppCompatActivity() {
         val searchItem = menu?.findItem(R.id.search)
         searchItem?.expandActionView()
         val searchMenuItem = menu?.findItem(R.id.search)
+
+
+        val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
+
+        var searchJob: Job? = null
+
         searchMenuItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
 
             override fun onMenuItemActionExpand(item: MenuItem): Boolean {
@@ -136,13 +142,23 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(title: String): Boolean {
-                return true
+                searchJob?.cancel()
+                searchJob = coroutineScope.launch {
+                    title?.let {
+                        delay(1)
+                        if (it.isEmpty()) {
+                            textResponse.text = "Ничего не найдено!"
+                        } else {
+                            textResponse.text = ""
+                            getMovie(title)
+                        }
+                    }
+                }
+                return false
             }
 
         }
         )
-
-
 
         return super.onCreateOptionsMenu(menu)
     }
