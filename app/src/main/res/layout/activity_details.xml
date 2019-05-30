@@ -135,6 +135,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="31dp"
                     android:text="Сюжет"
+                    android:visibility="gone"
                     android:textSize="24sp"
                     android:textColor="@color/white"
                     app:layout_constraintHorizontal_bias="0.0"

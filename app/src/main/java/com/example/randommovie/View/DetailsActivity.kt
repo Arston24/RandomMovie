@@ -37,13 +37,13 @@ class DetailsActivity : AppCompatActivity() {
     lateinit var backdropImage: ImageView
     lateinit var bookmarkIcon: ImageView
     private var pressed: Boolean = false
+    lateinit var labelSummary: TextView
 
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
     lateinit var movieList: List<Movie>
     private var castList: List<Cast.Result> = listOf()
     private lateinit var movieID: String
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +57,7 @@ class DetailsActivity : AppCompatActivity() {
         bookmarkIcon = findViewById(R.id.bookmark_icon)
         movieID = intent.extras.getString("MovieID")
         title = intent.extras.getString("title")
+        labelSummary = findViewById(R.id.summaryLabel)
 
 
         val db = Room.databaseBuilder(this, MovieDatabase::class.java, "descriptionMovie")
@@ -151,7 +152,10 @@ class DetailsActivity : AppCompatActivity() {
                         .load("http://image.tmdb.org/t/p/w500" + movieResponse.backdrop_path).diskCacheStrategy(
                             DiskCacheStrategy.ALL
                         ).into(backdropImage)
-                    overviewText.text = movieResponse.overview
+                    if(movieResponse.overview.isNotEmpty()) {
+                        labelSummary.visibility = View.VISIBLE
+                        overviewText.text = movieResponse.overview
+                    }
 
 
                     // Если нажата кнопка "Добавить в избранное", то выполняется одно из действий:
@@ -246,6 +250,8 @@ class DetailsActivity : AppCompatActivity() {
 
 
             }
+
+
 
 
         }
