@@ -62,13 +62,11 @@ class DetailsActivity : AppCompatActivity() {
         title = intent.extras.getString("title")
         labelSummary = findViewById(R.id.summaryLabel)
 
-
         val db = Room.databaseBuilder(this, MovieDatabase::class.java, "descriptionMovie")
             .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
             .build()
         movieList = db.movieDao().getAll()
-
 
         // Если база данных содержит какие-либо фильмы,
         // то проверяется есть ли необходимый фильм среди них
@@ -96,7 +94,6 @@ class DetailsActivity : AppCompatActivity() {
                                 movieList[i].genre
                             )
                         )
-
                     }
 
                     bookmarkIcon.setImageResource(R.mipmap.bookmark_pressed)
@@ -110,12 +107,10 @@ class DetailsActivity : AppCompatActivity() {
                         ).into(backdropImage)
                     overviewText.text = movieList[i].overview
 
-
                 }
             }
         }
         getMovie()
-
     }
 
     /**
@@ -125,7 +120,6 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun getMovie() {
 
-
         var retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create())
@@ -133,14 +127,12 @@ class DetailsActivity : AppCompatActivity() {
             .build()
         var apiService: Api = retrofit.create(Api::class.java)
 
-
         val db = Room.databaseBuilder(this, MovieDatabase::class.java, "descriptionMovie")
             .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
             .build()
 
         GlobalScope.launch(Dispatchers.Main) {
-
 
             val detailsMovie = apiService.getMovie(movieID, apiKey)
             try {
@@ -155,11 +147,10 @@ class DetailsActivity : AppCompatActivity() {
                         .load("http://image.tmdb.org/t/p/w500" + movieResponse.backdrop_path).diskCacheStrategy(
                             DiskCacheStrategy.ALL
                         ).into(backdropImage)
-                    if(movieResponse.overview.isNotEmpty()) {
+                    if (movieResponse.overview.isNotEmpty()) {
                         labelSummary.visibility = View.VISIBLE
                         overviewText.text = movieResponse.overview
                     }
-
 
                     // Если нажата кнопка "Добавить в избранное", то выполняется одно из действий:
                     // добавление в базу данных или удаление из неё
@@ -214,7 +205,6 @@ class DetailsActivity : AppCompatActivity() {
 
             }
 
-
             val castMovie = apiService.getMovieCast(movieID, apiKey)
             try {
                 if (castList.isNullOrEmpty()) {
@@ -226,7 +216,6 @@ class DetailsActivity : AppCompatActivity() {
                             castLabel.visibility = View.VISIBLE
 
                             for (i in castList.indices) {
-
                                 var parent: View = layoutInflater.inflate(R.layout.cast_item, movieCast, false)
                                 var photoCast: ImageView = parent.findViewById(R.id.cast_photo)
                                 var nameCast: TextView = parent.findViewById(R.id.cast_name)
@@ -256,11 +245,7 @@ class DetailsActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
 
-
             }
-
-
-
 
         }
     }
