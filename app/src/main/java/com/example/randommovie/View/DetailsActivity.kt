@@ -1,6 +1,8 @@
 package com.example.randommovie
 
+import android.app.Activity
 import android.arch.persistence.room.Room
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -15,6 +17,7 @@ import com.example.randommovie.Database.Movie
 import com.example.randommovie.Database.MovieDatabase
 import com.example.randommovie.Models.Cast
 import com.example.randommovie.Models.MovieDetails
+import com.example.randommovie.View.PersonActivity
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -236,8 +239,13 @@ class DetailsActivity : AppCompatActivity() {
                                     .diskCacheStrategy(
                                         DiskCacheStrategy.ALL
                                     ).into(photoCast)
+                                photoCast.setOnClickListener {
+                                    val intent = Intent(this@DetailsActivity, PersonActivity::class.java)
+                                    intent.putExtra("PersonID", castList[i].id.toString())
+                                    this@DetailsActivity.startActivity(intent)
+                                }
                                 movieCast.addView(parent)
-                                Log.e("MainActivity ", castList.indices.toString())
+                                Log.e("MainActivity ", castList[i].id.toString())
                             }
                         }
 

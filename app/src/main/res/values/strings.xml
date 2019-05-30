@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RandomMovie</string>
+    <string name="app_name">Random Movie</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="tab_text_1">ПОДОБРАТЬ</string>
     <string name="tab_text_2">ПОПУЛЯРНОЕ</string>
