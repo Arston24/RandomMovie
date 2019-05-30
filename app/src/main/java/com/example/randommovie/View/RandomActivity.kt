@@ -66,7 +66,6 @@ class RandomActivity : Fragment() {
             getMovie()
         }
 
-
         apiService.getGenres(apiKey).enqueue(object : Callback<Genre> {
             override fun onFailure(call: Call<Genre>, t: Throwable) {
 
@@ -177,9 +176,7 @@ class RandomActivity : Fragment() {
 
                 }
             }
-
         }
-
     }
 
     fun spinnerAdapter() {
@@ -221,8 +218,6 @@ class RandomActivity : Fragment() {
             activity?.startActivity(intent)
         }
     }
-
-
 }
 
 

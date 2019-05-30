@@ -3,6 +3,7 @@ package ru.arston.randommovie.API
 import com.example.randommovie.Models.Cast
 import com.example.randommovie.Models.MovieDetails
 import com.example.randommovie.Models.Person
+import com.example.randommovie.Models.PersonsMovie
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.Response
@@ -56,7 +57,6 @@ interface Api {
         @Query("api_key") api_key: String
     ): Deferred<Response<Movie>>
 
-
     @GET("search/movie?language=ru-Ru")
     fun getMovieSearch(@Query("query") query: String, @Query("api_key") api_key: String): Deferred<Response<Movie>>
 
@@ -64,6 +64,9 @@ interface Api {
     fun getMovieCast(@Path("movie_id") movie_id: String, @Query("api_key") api_key: String): Deferred<Response<Cast>>
 
     @GET("person/{person_id}?language=ru-Ru")
-    fun getPersonDetails (@Path("person_id") person_id: String, @Query("api_key") api_key: String): Deferred<Response<Person>>
+    fun getPersonDetails(@Path("person_id") person_id: String, @Query("api_key") api_key: String): Deferred<Response<Person>>
+
+    @GET("person/{person_id}/combined_credits")
+    fun getPersonMovie(@Path("person_id") person_id: String, @Query("api_key") api_key: String): Deferred<Response<PersonsMovie>>
 
 }

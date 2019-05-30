@@ -1,32 +1,28 @@
 package com.example.randommovie.View
 
-import android.media.Image
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.view.menu.ExpandedMenuView
-import android.text.Html
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextClock
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.randommovie.Database.Movie
-import com.example.randommovie.Models.Person
+import com.example.randommovie.DetailsActivity
+import com.example.randommovie.Models.*
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.ms.square.android.expandabletextview.ExpandableTextView
+import kotlinx.android.synthetic.main.activity_person.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import ru.arston.randommovie.API.Api
 import ru.arston.randommovie.BuildConfig
 import ru.arston.randommovie.R
 import java.lang.Exception
-
 
 
 class PersonActivity : AppCompatActivity() {
@@ -38,10 +34,13 @@ class PersonActivity : AppCompatActivity() {
     private lateinit var personBiography: ExpandableTextView
     private lateinit var profilePhoto: ImageView
     private lateinit var biographyLabel: TextView
+    private lateinit var personMovieLabel: TextView
 
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
     private val imageUrl = "http://image.tmdb.org/t/p/w500"
+    private var movieList: List<PersonsCast> = listOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +52,7 @@ class PersonActivity : AppCompatActivity() {
         personBiography = findViewById(R.id.biography_text)
         profilePhoto = findViewById(R.id.profile_image)
         biographyLabel = findViewById(R.id.biography_label)
+        personMovieLabel = findViewById(R.id.personMovieLabel)
 
         personID = intent.extras.getString("PersonID")
 
@@ -90,9 +90,62 @@ class PersonActivity : AppCompatActivity() {
                         DiskCacheStrategy.ALL
                     ).into(profilePhoto)
 
+                } else {
+                    Log.e("Ошибка! ", response.errorBody().toString())
                 }
             } catch (e: Exception) {
             }
+
+            val personMovies = apiService.getPersonMovie(personID, apiKey)
+            try {
+                Log.e("Фильмы актера: ", "в тру")
+
+                val response = personMovies.await()
+                Log.e("Фильмы актера: ", "в respe")
+                Log.e("Фильмы актера: ", response.body().toString())
+
+                //Log.e("Фильмы актера: ", response.body()?.result!![0].name.toString())
+
+                if (response.isSuccessful) {
+                        movieList = response.body()?.cast!!
+                    if (movieList.isNotEmpty()) {
+                        //Log.e("Фильмы актера: ", movieList[0].name)
+
+                        personMovieLabel.visibility = View.VISIBLE
+                        //Log.e("Фильмы актера: ", movieList[0].name)
+
+                        for (i in movieList.indices) {
+                            var parent: View = layoutInflater.inflate(R.layout.cast_item, personMovie, false)
+                            var photoCast: ImageView = parent.findViewById(R.id.cast_photo)
+                            var nameCast: TextView = parent.findViewById(R.id.cast_name)
+                            var characterCast: TextView = parent.findViewById(R.id.cast_character)
+
+                            nameCast.text = movieList[i].original_title
+                            characterCast.text = movieList[i].media_type
+                            Glide.with(this@PersonActivity)
+                                .load("http://image.tmdb.org/t/p/w500" + movieList[i].poster_path)
+                                .diskCacheStrategy(
+                                    DiskCacheStrategy.ALL
+                                ).into(photoCast)
+
+                            photoCast.setOnClickListener {
+                                val intent = Intent(this@PersonActivity, DetailsActivity::class.java)
+                                intent.putExtra("MovieID", movieList[i].id.toString())
+                                this@PersonActivity.startActivity(intent)
+                            }
+
+                            personMovie.addView(parent)
+                        }
+                    }
+                } else {
+                    Log.e("Ошибка! ", response.errorBody().toString())
+                }
+
+            } catch (e: Exception) {
+                println(e.message)
+
+            }
+
         }
     }
 }

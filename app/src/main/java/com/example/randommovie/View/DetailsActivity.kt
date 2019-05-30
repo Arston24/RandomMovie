@@ -207,41 +207,40 @@ class DetailsActivity : AppCompatActivity() {
 
             val castMovie = apiService.getMovieCast(movieID, apiKey)
             try {
-                if (castList.isNullOrEmpty()) {
-                    val response = castMovie.await()
-                    if (response.isSuccessful) {
-                        val castLabel = findViewById<TextView>(R.id.castLabel)
-                        castList = response.body()?.result!!
-                        if (castList.isNotEmpty()) {
-                            castLabel.visibility = View.VISIBLE
+                val response = castMovie.await()
+                if (response.isSuccessful) {
+                    val castLabel = findViewById<TextView>(R.id.castLabel)
+                    castList = response.body()?.result!!
+                    if (castList.isNotEmpty()) {
+                        castLabel.visibility = View.VISIBLE
 
-                            for (i in castList.indices) {
-                                var parent: View = layoutInflater.inflate(R.layout.cast_item, movieCast, false)
-                                var photoCast: ImageView = parent.findViewById(R.id.cast_photo)
-                                var nameCast: TextView = parent.findViewById(R.id.cast_name)
-                                var characterCast: TextView = parent.findViewById(R.id.cast_character)
-                                nameCast.text = castList[i].name
-                                characterCast.text = castList[i].character
+                        for (i in castList.indices) {
+                            var parent: View = layoutInflater.inflate(R.layout.cast_item, movieCast, false)
+                            var photoCast: ImageView = parent.findViewById(R.id.cast_photo)
+                            var nameCast: TextView = parent.findViewById(R.id.cast_name)
+                            var characterCast: TextView = parent.findViewById(R.id.cast_character)
+                            nameCast.text = castList[i].name
+                            characterCast.text = castList[i].character
 
-                                Glide.with(this@DetailsActivity)
-                                    .load("http://image.tmdb.org/t/p/w500" + castList[i].profilePath)
-                                    .diskCacheStrategy(
-                                        DiskCacheStrategy.ALL
-                                    ).into(photoCast)
-                                photoCast.setOnClickListener {
-                                    val intent = Intent(this@DetailsActivity, PersonActivity::class.java)
-                                    intent.putExtra("PersonID", castList[i].id.toString())
-                                    this@DetailsActivity.startActivity(intent)
-                                }
-                                movieCast.addView(parent)
-                                Log.e("MainActivity ", castList[i].id.toString())
+                            Glide.with(this@DetailsActivity)
+                                .load("http://image.tmdb.org/t/p/w500" + castList[i].profilePath)
+                                .diskCacheStrategy(
+                                    DiskCacheStrategy.ALL
+                                ).into(photoCast)
+
+                            photoCast.setOnClickListener {
+                                val intent = Intent(this@DetailsActivity, PersonActivity::class.java)
+                                intent.putExtra("PersonID", castList[i].id.toString())
+                                this@DetailsActivity.startActivity(intent)
                             }
+                            movieCast.addView(parent)
+                            Log.e("MainActivity ", castList[i].id.toString())
                         }
-
-
-                    } else {
-                        Log.e("MainActivity ", response.errorBody().toString())
                     }
+
+
+                } else {
+                    Log.e("MainActivity ", response.errorBody().toString())
                 }
             } catch (e: Exception) {
 
