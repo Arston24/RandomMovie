@@ -23,6 +23,10 @@ class TopActivity : Fragment() {
     private val url = "https://api.themoviedb.org/3/"
 
     lateinit var movieList: List<Movie.Result>
+    private var page: Int = 0
+    private var visibleItemCount: Int = 0
+    private var totalItemCount: Int = 0
+    private var pastVisibleItemCount: Int = 0
 
 
     var retrofit: Retrofit = Retrofit.Builder()
@@ -41,14 +45,12 @@ class TopActivity : Fragment() {
         // Отправка запроса на сервер и получение списка
         // самых популярных фильмов
         GlobalScope.launch(Dispatchers.Main) {
-            val popularMovieRequest = apiService.getPopularMovie(apiKey)
+            val popularMoviePagesRequest = apiService.getPopularMoviePages(apiKey)
             try {
-                val response = popularMovieRequest.await()
+                val response = popularMoviePagesRequest.await()
                 if (response.isSuccessful) {
                     val movieResponse = response.body()
-                    movieList = movieResponse?.results!!
-                    val movieAdapter = MovieAdapter(movieList)
-                    movieRecycler.adapter = movieAdapter
+                    page = movieResponse?.totalPages!!
 
                 } else {
                     Log.e("MainActivity ", response.errorBody().toString())
@@ -56,7 +58,39 @@ class TopActivity : Fragment() {
             } catch (e: Exception) {
 
             }
+
+            val popularMovieRequest = apiService.getPopularMovie(page, apiKey)
+            try {
+                val response = popularMovieRequest.await()
+                if (response.isSuccessful) {
+                    val movieResponse = response.body()
+                    movieList = movieResponse?.results!!
+                    val movieAdapter = MovieAdapter(movieList)
+                    movieRecycler.adapter = movieAdapter
+                    movieRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                            if (dy > 0){
+                                visibleItemCount = LinearLayoutManager(context).childCount
+                                totalItemCount = LinearLayoutManager(context).itemCount
+                                pastVisibleItemCount = LinearLayoutManager(context).c
+                            }
+                        }
+
+                        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                            super.onScrollStateChanged(recyclerView, newState)
+                        }
+                    })
+
+                } else {
+                    Log.e("MainActivity ", response.errorBody().toString())
+                }
+            } catch (e: Exception) {
+
+            }
+
+
         }
+
         return view
     }
 }

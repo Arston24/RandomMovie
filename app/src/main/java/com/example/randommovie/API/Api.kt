@@ -35,7 +35,10 @@ interface Api {
 
 
     @GET("movie/popular?language=ru-Ru")
-    fun getPopularMovie(@Query("api_key") api_key: String): Deferred<Response<Movie>>
+    fun getPopularMoviePages(@Query("api_key") api_key: String): Deferred<Response<Movie>>
+
+    @GET("movie/popular?language=ru-Ru")
+    fun getPopularMovie(@Query("page") page: Int, @Query("api_key") api_key: String): Deferred<Response<Movie>>
 
     @GET("movie/{movie_id}?language=ru-Ru")
     fun getMovie(@Path("movie_id") movie_id: String, @Query("api_key") api_key: String): Deferred<Response<MovieDetails>>
