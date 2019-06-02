@@ -37,7 +37,7 @@ class SearchActivity : AppCompatActivity() {
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
 
-    lateinit var movieList: List<Movie.Result>
+    lateinit var movieList: MutableList<Movie.Result>
     private lateinit var movieName: String
     lateinit var textResponse: TextView
 

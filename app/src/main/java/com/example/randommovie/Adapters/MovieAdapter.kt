@@ -14,7 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.randommovie.DetailsActivity
 
 
-class MovieAdapter(private val movieList: List<Movie.Result>) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
+class MovieAdapter(private val movieList: MutableList<Movie.Result>) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     class MovieViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 

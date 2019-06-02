@@ -18,39 +18,56 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.arston.randommovie.API.Api
 import ru.arston.randommovie.Models.Movie
 
+@Suppress("SENSELESS_COMPARISON")
 class TopActivity : Fragment() {
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
 
-    lateinit var movieList: List<Movie.Result>
+    private var movieList: MutableList<Movie.Result>? = null
+    private lateinit var movieRecycler: RecyclerView
+    private lateinit var movieAdapter: MovieAdapter
     private var page: Int = 0
+    private var currentPage: Int = 1
+    private var totalPage: Int = 0
     private var visibleItemCount: Int = 0
     private var totalItemCount: Int = 0
     private var pastVisibleItemCount: Int = 0
+    private var loading: Boolean = true
 
 
-    var retrofit: Retrofit = Retrofit.Builder()
+    private var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(url)
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
     var apiService: Api = retrofit.create(Api::class.java)
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view: View = inflater.inflate(R.layout.fragment_top, container, false)
 
-        val movieRecycler: RecyclerView = view.findViewById(R.id.movies_list)
-        movieRecycler.layoutManager = LinearLayoutManager(context)
+        movieRecycler = view.findViewById(R.id.movies_list)
+
+        setupOnScrollListener()
+        getMovies(currentPage)
+
+        //movieRecycler.layoutManager = LinearLayoutManager(context)
 
         // Отправка запроса на сервер и получение списка
         // самых популярных фильмов
+
+        return view
+    }
+
+    fun getMovies(page: Int) {
+        loading = true
         GlobalScope.launch(Dispatchers.Main) {
             val popularMoviePagesRequest = apiService.getPopularMoviePages(apiKey)
             try {
                 val response = popularMoviePagesRequest.await()
                 if (response.isSuccessful) {
                     val movieResponse = response.body()
-                    page = movieResponse?.totalPages!!
+                    totalPage = movieResponse?.totalPages!!
 
                 } else {
                     Log.e("MainActivity ", response.errorBody().toString())
@@ -61,25 +78,38 @@ class TopActivity : Fragment() {
 
             val popularMovieRequest = apiService.getPopularMovie(page, apiKey)
             try {
+                Log.e("MoviesRepository", "Current Page = $page")
                 val response = popularMovieRequest.await()
                 if (response.isSuccessful) {
                     val movieResponse = response.body()
-                    movieList = movieResponse?.results!!
-                    val movieAdapter = MovieAdapter(movieList)
-                    movieRecycler.adapter = movieAdapter
-                    movieRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                            if (dy > 0){
-                                visibleItemCount = LinearLayoutManager(context).childCount
-                                totalItemCount = LinearLayoutManager(context).itemCount
-                                pastVisibleItemCount = LinearLayoutManager(context).c
-                            }
-                        }
 
-                        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                            super.onScrollStateChanged(recyclerView, newState)
-                        }
-                    })
+                    if (movieList == null) {
+                        movieList = movieResponse?.results!!
+                        movieAdapter = MovieAdapter(movieList!!)
+                        movieRecycler.adapter = movieAdapter
+                    } else {
+                        movieList!!.addAll(response.body()?.results!!)
+                        val currentPosition = LinearLayoutManager(context).findLastVisibleItemPosition()
+                        movieAdapter.notifyDataSetChanged()
+                        movieRecycler.scrollToPosition(currentPosition)
+                    }
+
+                    currentPage = page
+                    loading = false
+//                    movieRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                            if (dy > 0){
+//                                visibleItemCount = LinearLayoutManager(context).childCount
+//                                totalItemCount = LinearLayoutManager(context).itemCount
+//                                pastVisibleItemCount = LinearLayoutManager(context).findFirstVisibleItemPosition()
+//
+//                            }
+//                        }
+//
+//                        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                            super.onScrollStateChanged(recyclerView, newState)
+//                        }
+//                    })
 
                 } else {
                     Log.e("MainActivity ", response.errorBody().toString())
@@ -87,10 +117,24 @@ class TopActivity : Fragment() {
             } catch (e: Exception) {
 
             }
-
-
         }
+    }
 
-        return view
+    private fun setupOnScrollListener() {
+        val manager = LinearLayoutManager(context)
+        movieRecycler.layoutManager = manager
+        movieRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val totalItemCount = manager.itemCount
+                val visibleItemCount = manager.childCount
+                val firstVisibleItem = manager.findFirstVisibleItemPosition()
+
+                if (firstVisibleItem + visibleItemCount >= totalItemCount) {
+                    if (!loading) {
+                        getMovies(currentPage + 1)
+                    }
+                }
+            }
+        })
     }
 }
