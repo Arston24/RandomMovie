@@ -2,6 +2,7 @@ package ru.arston.randommovie
 
 import  android.support.v4.app.Fragment
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -51,11 +52,6 @@ class TopActivity : Fragment() {
         setupOnScrollListener()
         getMovies(currentPage)
 
-        //movieRecycler.layoutManager = LinearLayoutManager(context)
-
-        // Отправка запроса на сервер и получение списка
-        // самых популярных фильмов
-
         return view
     }
 
@@ -96,20 +92,6 @@ class TopActivity : Fragment() {
 
                     currentPage = page
                     loading = false
-//                    movieRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                            if (dy > 0){
-//                                visibleItemCount = LinearLayoutManager(context).childCount
-//                                totalItemCount = LinearLayoutManager(context).itemCount
-//                                pastVisibleItemCount = LinearLayoutManager(context).findFirstVisibleItemPosition()
-//
-//                            }
-//                        }
-//
-//                        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                            super.onScrollStateChanged(recyclerView, newState)
-//                        }
-//                    })
 
                 } else {
                     Log.e("MainActivity ", response.errorBody().toString())
@@ -132,6 +114,11 @@ class TopActivity : Fragment() {
                 if (firstVisibleItem + visibleItemCount >= totalItemCount) {
                     if (!loading) {
                         getMovies(currentPage + 1)
+                        Snackbar.make(
+                            movieRecycler,
+                            "Загрузка фильмов...",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }

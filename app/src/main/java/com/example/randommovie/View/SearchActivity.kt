@@ -46,12 +46,8 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         setUpToolbar()
-        //setSupportActionBar(toolbarSearch)
 
-
-         //title = intent.extras.getString("MovieName")
-         textResponse = findViewById(R.id.textResponse)
-//        getMovie()
+        textResponse = findViewById(R.id.textResponse)
     }
 
 
