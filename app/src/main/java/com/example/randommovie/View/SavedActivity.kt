@@ -6,17 +6,11 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.example.randommovie.Database.Movie
 import com.example.randommovie.Database.MovieDatabase
 import ru.arston.randommovie.R
-import android.graphics.Bitmap
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
-import com.example.randommovie.Adapters.MovieAdapter
-import com.example.randommovie.Adapters.SavedAdapter
-import java.io.FileOutputStream
+import com.example.randommovie.View.Adapters.SavedAdapter
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 

@@ -1,4 +1,4 @@
-package com.example.randommovie.Adapters
+package com.example.randommovie.View.Adapters
 
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
