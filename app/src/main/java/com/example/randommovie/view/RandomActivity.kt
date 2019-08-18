@@ -1,31 +1,34 @@
 package ru.arston.randommovie
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import com.example.randommovie.network.Api
-import ru.arston.randommovie.Models.Genre
-import ru.arston.randommovie.Models.Movie
-import java.util.*
-import android.content.Intent
 import com.example.randommovie.DetailsActivity
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.example.randommovie.network.Api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import ru.arston.randommovie.Models.Genre
+import ru.arston.randommovie.Models.Movie
+import ru.arston.randommovie.databinding.FragmentRandomBinding
+import java.util.*
 
 
-class RandomActivity : androidx.fragment.app.Fragment() {
+class RandomActivity : Fragment() {
+
+    lateinit var binding: FragmentRandomBinding
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
     private val imageUrl = "http://image.tmdb.org/t/p/w500"
@@ -33,29 +36,18 @@ class RandomActivity : androidx.fragment.app.Fragment() {
     lateinit var genreList: List<Genre.Attributes>
     lateinit var movieList: List<Movie.Result>
     var page: Int = 0
-    lateinit var ratingMovie: RatingBar
 
     val years = ArrayList<String>()
     val genreAll = mutableMapOf<Int, Int>()
     var genreID: Int = 0
     var movieYear: String = "0"
 
-    lateinit var buttonRandom: Button
-    lateinit var cardView: androidx.cardview.widget.CardView
-    lateinit var imageView: ImageView
-    lateinit var textView: TextView
-
-
     var apiService = Api.create()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view: View = inflater.inflate(R.layout.fragment_random, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_random, container, false)
 
-        buttonRandom = view.findViewById(R.id.button_random)
-        cardView = view.findViewById(R.id.card_view)
-        ratingMovie = view.findViewById(R.id.movieRating)
-
-        buttonRandom.setOnClickListener {
+        binding.buttonRandom.setOnClickListener {
             getMovie()
         }
 
@@ -79,21 +71,20 @@ class RandomActivity : androidx.fragment.app.Fragment() {
         for (i in 1895..2019) years.add(i.toString())
         years.reverse()
         years.add(0, "Год")
-        val spinnerYear: Spinner = view!!.findViewById(R.id.spinner_year)
-        spinnerYear.adapter = ArrayAdapter(context, R.layout.item_spinner, years)
-        spinnerYear?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spinnerYear.adapter = ArrayAdapter(context, R.layout.item_spinner, years)
+        binding.spinnerYear?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                movieYear = spinnerYear.selectedItem as String
+                movieYear = binding.spinnerYear.selectedItem as String
             }
         }
 
         getMovie()
 
-        return view
+        return binding.root
     }
 
     /**
@@ -174,11 +165,10 @@ class RandomActivity : androidx.fragment.app.Fragment() {
 
     fun spinnerAdapter() {
 
-        val spinnerGenre: Spinner = view!!.findViewById(R.id.spinner_genre)
-        spinnerGenre.adapter =
+        binding.spinnerGenre.adapter =
             ArrayAdapter.createFromResource(context, R.array.movie_genres, R.layout.item_spinner)
 
-        spinnerGenre?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spinnerGenre?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
@@ -196,15 +186,13 @@ class RandomActivity : androidx.fragment.app.Fragment() {
      */
     private fun setAdapter() {
         val r = (0..movieList.size).random()
-        imageView = view!!.findViewById(R.id.card_image)
-        textView = view!!.findViewById(R.id.card_title)
         Glide.with(this).load(imageUrl + movieList[r].posterPath).diskCacheStrategy(
             DiskCacheStrategy.ALL
-        ).into(imageView)
-        textView.text = movieList[r].title
-        ratingMovie.rating = (movieList[r].voteAverage!! / 2).toFloat()
+        ).into(binding.cardImage)
+        binding.cardTitle.text = movieList[r].title
+        binding.movieRating.rating = (movieList[r].voteAverage!! / 2).toFloat()
 
-        cardView.setOnClickListener {
+        binding.cardView.setOnClickListener {
             val intent = Intent(activity, DetailsActivity::class.java)
             intent.putExtra("MovieID", movieList[r].id.toString())
             intent.putExtra("title", movieList[r].title)

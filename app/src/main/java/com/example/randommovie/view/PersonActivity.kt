@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.randommovie.DetailsActivity
@@ -22,19 +23,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import com.example.randommovie.network.Api
 import ru.arston.randommovie.BuildConfig
 import ru.arston.randommovie.R
+import ru.arston.randommovie.databinding.ActivityPersonBinding
 import java.lang.Exception
 
 
 class PersonActivity : AppCompatActivity() {
-
+    lateinit var binding: ActivityPersonBinding
     private lateinit var personID: String
-    private lateinit var personName: TextView
-    private lateinit var personType: TextView
-    private lateinit var personBithday: TextView
-    private lateinit var personBiography: ExpandableTextView
-    private lateinit var profilePhoto: ImageView
-    private lateinit var biographyLabel: TextView
-    private lateinit var personMovieLabel: TextView
 
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
@@ -44,22 +39,14 @@ class PersonActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_person)
-
-        personName = findViewById(R.id.name_text)
-        personType = findViewById(R.id.department_text)
-        personBithday = findViewById(R.id.birthday_text)
-        personBiography = findViewById(R.id.biography_text)
-        profilePhoto = findViewById(R.id.profile_image)
-        biographyLabel = findViewById(R.id.biography_label)
-        personMovieLabel = findViewById(R.id.personMovieLabel)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_person)
 
         personID = intent.extras.getString("PersonID")
 
         getPerson()
     }
 
-    fun getPerson() {
+    private fun getPerson() {
 
         var retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(url)
@@ -77,18 +64,18 @@ class PersonActivity : AppCompatActivity() {
 
                 if (response.isSuccessful) {
                     val personList = response.body()
-                    personName.text = personList!!.name
-                    personType.text = personList.knownForDepartment
+                    binding.nameText.text = personList!!.name
+                    binding.departmentText.text = personList.knownForDepartment
                     if (personList.birthday!!.isNotEmpty()) {
-                        personBithday.text = "День рождения: " + personList.birthday + ", " + personList.placeOfBirth
+                        binding.birthdayText.text = "День рождения: " + personList.birthday + ", " + personList.placeOfBirth
                     }
                     if (personList.biography!!.isNotEmpty()) {
-                        biographyLabel.visibility = View.VISIBLE
-                        personBiography.text = personList.biography + " "
+                        binding.biographyLabel.visibility = View.VISIBLE
+                        binding.biographyText.text = personList.biography + " "
                     }
                     Glide.with(this@PersonActivity).load(imageUrl + personList.profilePath).diskCacheStrategy(
                         DiskCacheStrategy.ALL
-                    ).into(profilePhoto)
+                    ).into(binding.profileImage)
 
                 } else {
                     Log.e("Ошибка! ", response.errorBody().toString())

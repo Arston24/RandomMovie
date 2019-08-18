@@ -1,101 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
-    <Spinner
-            android:id="@+id/spinner_genre"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:background="#212121"
-            android:popupBackground="#DA1A1818"
-            android:layout_marginTop="40dp"
-            android:layout_marginStart="40dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <Spinner
+                android:id="@+id/spinner_genre"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:background="#212121"
+                android:popupBackground="#DA1A1818"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="40dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-    </Spinner>
+        </Spinner>
 
-    <Spinner
-            android:id="@+id/spinner_year"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:background="#212121"
-            android:popupBackground="#DA1A1818"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="40dp">
+        <Spinner
+                android:id="@+id/spinner_year"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:background="#212121"
+                android:popupBackground="#DA1A1818"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="40dp">
 
-    </Spinner>
-    <androidx.cardview.widget.CardView
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card_view"
-            android:layout_width="250dp"
-            android:layout_height="420dp"
-            android:layout_marginTop="140dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="80dp"
-            card_view:cardElevation="5dp"
-            card_view:cardCornerRadius="4dp">
-        <RelativeLayout
+        </Spinner>
+        <androidx.cardview.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view"
                 android:layout_width="250dp"
-                android:layout_height="match_parent"
-                android:background="#212121">
+                android:layout_height="420dp"
+                android:layout_marginTop="140dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="80dp"
+                card_view:cardElevation="5dp"
+                card_view:cardCornerRadius="4dp">
+            <RelativeLayout
+                    android:layout_width="250dp"
+                    android:layout_height="match_parent"
+                    android:background="#212121">
 
-            <ImageView
-                    android:id="@+id/card_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/card_image_height"
-                    android:scaleType="centerCrop"
-                    android:layout_marginTop="0dp"
-                    android:layout_alignParentTop="true"
-                    android:background="@drawable/ic_launcher_background"/>
+                <ImageView
+                        android:id="@+id/card_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/card_image_height"
+                        android:scaleType="centerCrop"
+                        android:layout_marginTop="0dp"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/ic_launcher_background"/>
 
-            <TextView
-                    android:id="@+id/card_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:singleLine="true"
-                    android:layout_alignBottom="@+id/card_image"
-                    android:layout_marginLeft="@dimen/md_keylines"
-                    tools:text="Название фильма"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:textColor="@color/white"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginBottom="-19dp"/>
+                <TextView
+                        android:id="@+id/card_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:singleLine="true"
+                        android:layout_alignBottom="@+id/card_image"
+                        android:layout_marginLeft="@dimen/md_keylines"
+                        tools:text="Название фильма"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/white"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginBottom="-19dp"/>
 
-            <RatingBar
-                    android:id="@+id/movieRating"
-                    style="@style/RatingBar"
-                    android:theme="@style/RatingBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="400dp"
-                    android:numStars="5"/>
+                <RatingBar
+                        android:id="@+id/movieRating"
+                        style="@style/RatingBar"
+                        android:theme="@style/RatingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="400dp"
+                        android:numStars="5"/>
 
-        </RelativeLayout>
+            </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-    <Button
-            android:text="@string/button_random"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:id="@+id/button_random"
-            android:background="#F42424"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="592dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="108dp"/>
+        <Button
+                android:text="@string/button_random"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:id="@+id/button_random"
+                android:background="#F42424"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="592dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="108dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -11,16 +11,20 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import ru.arston.randommovie.Adapters.SectionPagerAdapter
 import android.view.MenuItem
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
+import ru.arston.randommovie.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
-    //var binding = MainActivityBinding
+    lateinit var binding: ActivityMainBinding
 
     private var mSectionsPagerAdapter: SectionPagerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         setSupportActionBar(toolbar)
         mSectionsPagerAdapter = SectionPagerAdapter(supportFragmentManager)

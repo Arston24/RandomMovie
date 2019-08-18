@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.randommovie.database.Movie
@@ -26,19 +27,14 @@ import com.example.randommovie.network.Api
 import ru.arston.randommovie.BuildConfig
 import ru.arston.randommovie.R
 import kotlinx.android.synthetic.main.activity_details.*
+import ru.arston.randommovie.databinding.ActivityDetailsBinding
 
 
 class DetailsActivity : AppCompatActivity() {
-    lateinit var titleText: TextView
-    lateinit var genresText: TextView
-    lateinit var dateReleaseText: TextView
-    lateinit var overviewText: TextView
-    lateinit var reviewsText: TextView
-    lateinit var ratingMovie: RatingBar
-    lateinit var backdropImage: ImageView
-    lateinit var bookmarkIcon: ImageView
+
+    lateinit var binding: ActivityDetailsBinding
+
     private var pressed: Boolean = false
-    lateinit var labelSummary: TextView
 
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
@@ -48,17 +44,9 @@ class DetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_details)
-        titleText = findViewById(R.id.movieDetailsTitle)
-        genresText = findViewById(R.id.movieDetailsGenres)
-        dateReleaseText = findViewById(R.id.movieDetailsReleaseDate)
-        overviewText = findViewById(R.id.movieDetailsOverview)
-        ratingMovie = findViewById(R.id.movieDetailsRating)
-        backdropImage = findViewById(R.id.movieDetailsBackdrop)
-        bookmarkIcon = findViewById(R.id.bookmark_icon)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
         movieID = intent.extras.getString("MovieID")
         title = intent.extras.getString("title")
-        labelSummary = findViewById(R.id.summaryLabel)
 
         val db = Room.databaseBuilder(this, MovieDatabase::class.java, "descriptionMovie")
             .fallbackToDestructiveMigration()
@@ -72,12 +60,12 @@ class DetailsActivity : AppCompatActivity() {
             for (i in movieList.indices) {
                 if (movieList[i].title == title) {
                     pressed = true
-                    bookmarkIcon.setOnClickListener {
+                    binding.bookmarkIcon.setOnClickListener {
 
                         pressed = false
-                        bookmarkIcon.setImageResource(R.mipmap.bookmark_unpressed)
+                        binding.bookmarkIcon.setImageResource(R.mipmap.bookmark_unpressed)
                         Snackbar.make(
-                            bookmarkIcon, "Удалено из избранного",
+                            binding.bookmarkIcon, "Удалено из избранного",
                             Snackbar.LENGTH_SHORT
                         ).show()
                         db.movieDao().delete(
@@ -94,16 +82,16 @@ class DetailsActivity : AppCompatActivity() {
                         )
                     }
 
-                    bookmarkIcon.setImageResource(R.mipmap.bookmark_pressed)
-                    titleText.text = movieList[i].title
-                    dateReleaseText.text = movieList[i].releaseDate
-                    genresText.text = movieList[i].genre
-                    ratingMovie.rating = (movieList[i].rating!!.div(2)).toFloat()
+                    binding.bookmarkIcon.setImageResource(R.mipmap.bookmark_pressed)
+                    binding.movieDetailsTitle.text = movieList[i].title
+                    binding.movieDetailsReleaseDate.text = movieList[i].releaseDate
+                    binding.movieDetailsGenres.text = movieList[i].genre
+                    binding.movieDetailsRating.rating = (movieList[i].rating!!.div(2)).toFloat()
                     Glide.with(this@DetailsActivity)
                         .load("http://image.tmdb.org/t/p/w500" + movieList[i].backdropPath).diskCacheStrategy(
                             DiskCacheStrategy.ALL
-                        ).into(backdropImage)
-                    overviewText.text = movieList[i].overview
+                        ).into(binding.movieDetailsBackdrop)
+                    binding.movieDetailsOverview.text = movieList[i].overview
 
                 }
             }
@@ -137,27 +125,27 @@ class DetailsActivity : AppCompatActivity() {
                 val response = detailsMovie.await()
                 if (response.isSuccessful) {
                     val movieResponse = response.body()
-                    titleText.text = movieResponse?.title
-                    genresText.text = movieResponse?.genres?.get(0)!!.name
-                    dateReleaseText.text = movieResponse.release_date
-                    ratingMovie.rating = (movieResponse.vote_average / 2).toFloat()
+                    binding.movieDetailsTitle.text = movieResponse?.title
+                    binding.movieDetailsGenres.text = movieResponse?.genres?.get(0)!!.name
+                    binding.movieDetailsReleaseDate.text = movieResponse.release_date
+                    binding.movieDetailsRating.rating = (movieResponse.vote_average / 2).toFloat()
                     Glide.with(this@DetailsActivity)
                         .load("http://image.tmdb.org/t/p/w500" + movieResponse.backdrop_path).diskCacheStrategy(
                             DiskCacheStrategy.ALL
-                        ).into(backdropImage)
+                        ).into(binding.movieDetailsBackdrop)
                     if (movieResponse.overview.isNotEmpty()) {
-                        labelSummary.visibility = View.VISIBLE
-                        overviewText.text = movieResponse.overview
+                        binding.summaryLabel.visibility = View.VISIBLE
+                        binding.movieDetailsOverview.text = movieResponse.overview
                     }
 
                     // Если нажата кнопка "Добавить в избранное", то выполняется одно из действий:
                     // добавление в базу данных или удаление из неё
-                    bookmarkIcon.setOnClickListener {
+                    binding.bookmarkIcon.setOnClickListener {
                         if (!pressed) {
                             pressed = true
-                            bookmarkIcon.setImageResource(R.mipmap.bookmark_pressed)
+                            binding.bookmarkIcon.setImageResource(R.mipmap.bookmark_pressed)
                             Snackbar.make(
-                                bookmarkIcon, "Добавлено в избранное",
+                                binding.bookmarkIcon, "Добавлено в избранное",
                                 Snackbar.LENGTH_SHORT
                             ).show()
 
@@ -176,11 +164,11 @@ class DetailsActivity : AppCompatActivity() {
 
                         } else {
                             Snackbar.make(
-                                bookmarkIcon, "Удалено из избранного",
+                                binding.bookmarkIcon, "Удалено из избранного",
                                 Snackbar.LENGTH_SHORT
                             ).show()
                             pressed = false
-                            bookmarkIcon.setImageResource(R.mipmap.bookmark_unpressed)
+                            binding.bookmarkIcon.setImageResource(R.mipmap.bookmark_unpressed)
                             db.movieDao().delete(
                                 Movie(
                                     movieResponse.id,

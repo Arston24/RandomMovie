@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -15,11 +16,12 @@ import com.example.randommovie.view.TopActivityVM
 import com.example.randommovie.view.ViewModelTest
 import com.example.randommovie.view.adapters.MovieAdapter
 import ru.arston.randommovie.Models.Movie
+import ru.arston.randommovie.databinding.FragmentTopBinding
 
 
 class TopActivity : Fragment() {
 
-    //private lateinit var binding:
+    private lateinit var binding: FragmentTopBinding
     private var movieList: LiveData<List<Movie.Result>>? = null
     private lateinit var movieRecycler: RecyclerView
     private var page: Int = 0
@@ -35,24 +37,19 @@ class TopActivity : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-       // val view: View = inflater.inflate(R.layout.fragment_top, container, false)
-        // binding = DataBindingUtil.inflate(inflater, R.layout.fragment_top, container, false)
-        // vm = ViewModelProviders.of(this).get(TopActivityVM::class.java)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_top, container, false)
         vmTest = ViewModelProviders.of(this).get(ViewModelTest::class.java)
-
-        // movieRecycler = view!!.findViewById(R.id.movies_list)
-        val manager = LinearLayoutManager(context)
-        // movieRecycler.layoutManager = manager
+        binding.moviesList.layoutManager = LinearLayoutManager(context)
         //setupOnScrollListener()
         getMovies()
-        return view
+        return binding.root
     }
 
     private fun getMovies() {
         vmTest.getDataFromRetrofit(1).observe(this, Observer { data ->
             if (data != null) {
                 val movieAdapter = MovieAdapter(data)
-                movieRecycler.adapter = movieAdapter
+                binding.moviesList.adapter = movieAdapter
                 Log.e("RESULT", data[1].title)
             } else Log.e("RESULT", "Empty data")
         })
