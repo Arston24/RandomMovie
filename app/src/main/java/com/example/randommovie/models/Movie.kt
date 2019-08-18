@@ -17,7 +17,7 @@ class Movie {
     var totalPages: Int? = null
     @SerializedName("results")
     @Expose
-    var results: MutableList<Result>? = null
+    var results: List<Result>? = null
 
     inner class Result {
 

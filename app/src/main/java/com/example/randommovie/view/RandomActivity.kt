@@ -1,8 +1,6 @@
 package ru.arston.randommovie
 
-import  android.support.v4.app.Fragment
 import android.os.Bundle
-import android.support.v7.widget.CardView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +13,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.arston.randommovie.API.Api
+import com.example.randommovie.network.Api
 import ru.arston.randommovie.Models.Genre
 import ru.arston.randommovie.Models.Movie
 import java.util.*
@@ -24,11 +22,10 @@ import com.example.randommovie.DetailsActivity
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class RandomActivity : Fragment() {
+class RandomActivity : androidx.fragment.app.Fragment() {
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
     private val imageUrl = "http://image.tmdb.org/t/p/w500"
@@ -44,16 +41,12 @@ class RandomActivity : Fragment() {
     var movieYear: String = "0"
 
     lateinit var buttonRandom: Button
-    lateinit var cardView: CardView
+    lateinit var cardView: androidx.cardview.widget.CardView
     lateinit var imageView: ImageView
     lateinit var textView: TextView
 
-    private var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(url)
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    var apiService: Api = retrofit.create(Api::class.java)
+
+    var apiService = Api.create()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view: View = inflater.inflate(R.layout.fragment_random, container, false)

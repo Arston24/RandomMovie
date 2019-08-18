@@ -1,4 +1,4 @@
-package com.example.randommovie.Models
+package com.example.randommovie.models
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

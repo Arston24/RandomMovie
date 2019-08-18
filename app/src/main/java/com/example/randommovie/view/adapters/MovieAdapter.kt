@@ -1,7 +1,6 @@
-package com.example.randommovie.View.Adapters
+package com.example.randommovie.view.adapters
 
 import android.content.Intent
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +8,13 @@ import android.widget.ImageView
 import ru.arston.randommovie.Models.Movie
 import ru.arston.randommovie.R
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.randommovie.DetailsActivity
 
 
-class MovieAdapter(private val movieList: MutableList<Movie.Result>) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
+class MovieAdapter(private val movieList: List<Movie.Result>) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     class MovieViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
@@ -45,8 +45,7 @@ class MovieAdapter(private val movieList: MutableList<Movie.Result>) : RecyclerV
 
     }
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieAdapter.MovieViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.movie_card, parent, false)
 
         return MovieViewHolder(view)

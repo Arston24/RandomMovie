@@ -1,20 +1,18 @@
-package com.example.randommovie.View
+package com.example.randommovie.view
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SearchView
-import android.support.v7.widget.Toolbar
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import com.example.randommovie.View.Adapters.MovieAdapter
+import com.example.randommovie.view.adapters.MovieAdapter
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.arston.randommovie.API.Api
+import com.example.randommovie.network.Api
 import ru.arston.randommovie.BuildConfig
 import ru.arston.randommovie.Models.Movie
 import ru.arston.randommovie.R
@@ -25,7 +23,7 @@ class SearchActivity : AppCompatActivity() {
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
 
-    lateinit var movieList: MutableList<Movie.Result>
+    lateinit var movieList: List<Movie.Result>
     private lateinit var movieName: String
     lateinit var textResponse: TextView
 
@@ -51,8 +49,8 @@ class SearchActivity : AppCompatActivity() {
             .build()
         var apiService: Api = retrofit.create(Api::class.java)
 
-        val movieRecycler: RecyclerView = findViewById(R.id.movies_list)
-        movieRecycler.layoutManager = LinearLayoutManager(this)
+        val movieRecycler: androidx.recyclerview.widget.RecyclerView = findViewById(R.id.movies_list)
+        movieRecycler.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
 
         GlobalScope.launch(Dispatchers.Main) {
             val popularMovieRequest = apiService.getMovieSearch(title, apiKey)

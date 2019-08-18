@@ -1,15 +1,19 @@
-package ru.arston.randommovie.API
+package com.example.randommovie.network
 
-import com.example.randommovie.Models.Cast
-import com.example.randommovie.Models.MovieDetails
-import com.example.randommovie.Models.Person
-import com.example.randommovie.Models.PersonsMovie
+import com.example.randommovie.models.Cast
+import com.example.randommovie.models.MovieDetails
+import com.example.randommovie.models.Person
+import com.example.randommovie.models.PersonsMovie
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import ru.arston.randommovie.BuildConfig
 import ru.arston.randommovie.Models.Genre
 import ru.arston.randommovie.Models.Movie
 
@@ -35,7 +39,7 @@ interface Api {
 
 
     @GET("movie/popular?language=ru-Ru")
-    fun getPopularMoviePages(@Query("api_key") api_key: String): Deferred<Response<Movie>>
+    fun getPopularMoviePages(@Query("api_key") api_key: String): Deferred<Response<List<Movie>>>
 
     @GET("movie/popular?language=ru-Ru")
     fun getPopularMovie(@Query("page") page: Int, @Query("api_key") api_key: String): Deferred<Response<Movie>>
@@ -71,5 +75,16 @@ interface Api {
 
     @GET("person/{person_id}/combined_credits")
     fun getPersonMovie(@Path("person_id") person_id: String, @Query("api_key") api_key: String): Deferred<Response<PersonsMovie>>
+
+    companion object {
+        fun create(): Api {
+            return Retrofit.Builder()
+                .baseUrl(BuildConfig.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                .build()
+                .create(Api::class.java)
+        }
+    }
 
 }

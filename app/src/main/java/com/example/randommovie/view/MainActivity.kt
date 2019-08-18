@@ -1,23 +1,20 @@
 package ru.arston.randommovie
 
 
-import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
-import android.support.design.widget.TabLayout
-import android.support.v7.app.AppCompatActivity
+import com.google.android.material.tabs.TabLayout
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.SearchView
 import android.view.Menu
-import com.example.randommovie.View.SearchActivity
+import com.example.randommovie.view.SearchActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import ru.arston.randommovie.Adapters.SectionPagerAdapter
-import android.content.ComponentName
 import android.view.MenuItem
 
 
 class MainActivity : AppCompatActivity() {
+    //var binding = MainActivityBinding
 
     private var mSectionsPagerAdapter: SectionPagerAdapter? = null
 

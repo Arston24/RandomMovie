@@ -1,24 +1,20 @@
 package com.example.randommovie
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.randommovie.Database.Movie
-import com.example.randommovie.Database.MovieDatabase
+import com.example.randommovie.database.Movie
+import com.example.randommovie.database.MovieDatabase
 import ru.arston.randommovie.R
-import android.support.v7.widget.RecyclerView
-import com.example.randommovie.View.Adapters.SavedAdapter
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.GridLayoutManager
+import com.example.randommovie.view.adapters.SavedAdapter
 
 
-class SavedActivity : Fragment() {
+class SavedActivity : androidx.fragment.app.Fragment() {
     lateinit var movieList: List<Movie>
-    lateinit var movieRecycler: RecyclerView
-    lateinit var mySwipeRefreshLayout: SwipeRefreshLayout
+    lateinit var movieRecycler: androidx.recyclerview.widget.RecyclerView
+    lateinit var mySwipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view: View = inflater.inflate(R.layout.fragment_saved, container, false)
@@ -31,7 +27,7 @@ class SavedActivity : Fragment() {
         }
 
         movieRecycler = view.findViewById(R.id.saved_list)
-        movieRecycler.layoutManager = GridLayoutManager(context, 3)
+        movieRecycler.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
 
 
         val db = Room.databaseBuilder(activity!!.applicationContext, MovieDatabase::class.java, "descriptionMovie")

@@ -1,4 +1,4 @@
-package com.example.randommovie.Models
+package com.example.randommovie.models
 
 data class PersonsMovie(
     val cast: List<PersonsCast>,
