@@ -5,4 +5,9 @@
           android:title="Поиск"
           android:icon="@drawable/ic_search"
           app:showAsAction="collapseActionView|ifRoom"/>
+
+    <item android:id="@+id/nightMode"
+        android:title="Поиск"
+        android:icon="@drawable/ic_brightness"
+        app:showAsAction="collapseActionView|ifRoom"/>
 </menu>

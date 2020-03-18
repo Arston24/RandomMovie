@@ -2,17 +2,21 @@ package ru.arston.randommovie
 
 
 import android.content.Intent
-import com.google.android.material.tabs.TabLayout
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.view.Menu
-import com.example.randommovie.view.SearchActivity
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.toolbar
-import ru.arston.randommovie.Adapters.SectionPagerAdapter
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewAnimationUtils
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
+import androidx.lifecycle.Observer
+import com.example.randommovie.view.SearchActivity
+import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.activity_main.*
+import ru.arston.randommovie.Adapters.SectionPagerAdapter
 import ru.arston.randommovie.databinding.ActivityMainBinding
 
 
@@ -34,6 +38,11 @@ class MainActivity : AppCompatActivity() {
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
+        (application as App).preferenceRepository
+            .nightModeLive.observe(this, Observer { nightMode ->
+            nightMode?.let { AppCompatDelegate.setDefaultNightMode(it) }
+        })
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -41,6 +50,12 @@ class MainActivity : AppCompatActivity() {
             R.id.search -> {
                 val intent = Intent(this, SearchActivity::class.java)
                 startActivity(intent)
+                true
+            }
+            R.id.nightMode -> {
+                val preferenceRepository = (application as App).preferenceRepository
+                preferenceRepository.isDarkTheme =
+                    preferenceRepository.nightMode != AppCompatDelegate.MODE_NIGHT_YES
                 true
             }
             else -> super.onOptionsItemSelected(item)

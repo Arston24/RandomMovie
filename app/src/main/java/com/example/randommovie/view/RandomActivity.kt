@@ -1,5 +1,6 @@
 package ru.arston.randommovie
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -44,7 +45,11 @@ class RandomActivity : Fragment() {
 
     var apiService = Api.create()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_random, container, false)
 
         binding.buttonRandom.setOnClickListener {
@@ -77,7 +82,12 @@ class RandomActivity : Fragment() {
 
             }
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 movieYear = binding.spinnerYear.selectedItem as String
             }
         }
@@ -87,11 +97,6 @@ class RandomActivity : Fragment() {
         return binding.root
     }
 
-    /**
-     * Метод отправляет запрос на сервер и, получив все фильмы,
-     * генерирует номер случайной Json-страницы (page) из всех полученных, затем отправлет новый запрос,
-     * передав в качестве одного из параметров запроса номер сгенерированной страницы.
-     */
     private fun getMovie() {
 
         GlobalScope.launch(Dispatchers.Main) {
@@ -113,7 +118,8 @@ class RandomActivity : Fragment() {
 
                 }
 
-                val randomMovieRequest = apiService.getRandomMovie(genreID, movieYear, page, "US", apiKey)
+                val randomMovieRequest =
+                    apiService.getRandomMovie(genreID, movieYear, page, "US", apiKey)
                 try {
                     val response = randomMovieRequest.await()
                     if (response.isSuccessful) {
@@ -166,14 +172,19 @@ class RandomActivity : Fragment() {
     fun spinnerAdapter() {
 
         binding.spinnerGenre.adapter =
-            ArrayAdapter.createFromResource(context, R.array.movie_genres, R.layout.item_spinner)
+            ArrayAdapter.createFromResource(binding.spinnerGenre.context, R.array.movie_genres, R.layout.item_spinner)
 
         binding.spinnerGenre?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 if (position == 0) {
                     genreID = 0
                 } else genreID = genreAll[position]!!
@@ -181,9 +192,7 @@ class RandomActivity : Fragment() {
         }
     }
 
-    /**
-     * Функция заполняет данными CardView
-     */
+
     private fun setAdapter() {
         val r = (0..movieList.size).random()
         Glide.with(this).load(imageUrl + movieList[r].posterPath).diskCacheStrategy(

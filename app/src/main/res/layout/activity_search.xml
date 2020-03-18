@@ -14,7 +14,6 @@
             android:layout_height="?attr/actionBarSize"
             android:paddingTop="@dimen/appbar_padding_top"
             android:background="#212121"
-            android:theme="@style/AppTheme.AppBarOverlay"
     >
 
         <androidx.appcompat.widget.Toolbar
@@ -23,7 +22,6 @@
                 android:layout_width="412dp"
                 android:layout_height="34dp"
                 android:layout_weight="1"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:layout_scrollFlags="scroll|enterAlways"
         >
 
