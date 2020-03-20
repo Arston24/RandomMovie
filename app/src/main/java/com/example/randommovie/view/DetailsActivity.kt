@@ -45,8 +45,8 @@ class DetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
-        movieID = intent.extras.getString("MovieID")
-        title = intent.extras.getString("title")
+        movieID = intent.extras?.getString("MovieID").toString()
+        title = intent.extras?.getString("title")
 
         val db = Room.databaseBuilder(this, MovieDatabase::class.java, "descriptionMovie")
             .fallbackToDestructiveMigration()

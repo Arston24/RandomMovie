@@ -33,4 +33,22 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
     </style>
+
+    <style name="Theme.Purple" parent="Base.Theme.Purple">
+        <!--Material color attributes (dark theme) -->
+        <item name="colorPrimary">#C4A2FF</item>
+        <item name="colorPrimaryVariant">@color/purple_600</item>
+        <item name="colorSecondary">@color/green_200</item>
+        <item name="colorSecondaryVariant">@color/green_500</item>
+        <item name="android:colorBackground">#3B2463</item>
+        <item name="colorSurface">#422970</item>
+        <item name="colorError">@color/red_200</item>
+        <item name="colorOnPrimary">#3B2463</item>
+        <item name="colorOnSecondary">#3B2463</item>
+        <item name="colorOnBackground">@color/white_50</item>
+        <item name="colorOnSurface">@color/white_50</item>
+        <item name="colorOnError">@color/black_900</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
+    </style>
 </resources>

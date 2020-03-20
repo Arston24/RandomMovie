@@ -41,7 +41,7 @@ class PersonActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_person)
 
-        personID = intent.extras.getString("PersonID")
+        personID = intent.extras?.getString("PersonID").toString()
 
         getPerson()
     }

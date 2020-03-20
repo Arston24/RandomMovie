@@ -76,7 +76,7 @@ class RandomActivity : Fragment() {
         for (i in 1895..2019) years.add(i.toString())
         years.reverse()
         years.add(0, "Год")
-        binding.spinnerYear.adapter = ArrayAdapter(context, R.layout.item_spinner, years)
+        binding.spinnerYear.adapter = ArrayAdapter(binding.spinnerYear.context, R.layout.item_spinner, years)
         binding.spinnerYear?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 

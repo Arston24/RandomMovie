@@ -1,16 +1,21 @@
 package ru.arston.randommovie
 
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
+import android.graphics.*
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewAnimationUtils
+import android.util.AttributeSet
+import android.view.*
+import android.view.animation.Interpolator
+import android.widget.LinearLayout
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
+import androidx.core.view.LayoutInflaterCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.randommovie.view.SearchActivity
@@ -18,6 +23,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.arston.randommovie.Adapters.SectionPagerAdapter
 import ru.arston.randommovie.databinding.ActivityMainBinding
+import kotlin.math.hypot
 
 
 class MainActivity : AppCompatActivity() {
@@ -62,6 +68,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search_icon, menu)
 //        val searchItem = menu.findItem(R.id.search)
@@ -104,3 +111,4 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
