@@ -6,6 +6,8 @@ import com.example.randommovie.models.Person
 import com.example.randommovie.models.PersonsMovie
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -78,8 +80,14 @@ interface Api {
 
     companion object {
         fun create(): Api {
+            val logger = HttpLoggingInterceptor()
+            logger.level = HttpLoggingInterceptor.Level.BASIC
+            val client = OkHttpClient.Builder()
+                .addInterceptor(logger)
+                .build()
             return Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
+                .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .build()

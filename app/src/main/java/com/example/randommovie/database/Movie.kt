@@ -1,18 +1,18 @@
 package com.example.randommovie.database
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 
-@Entity
+@Entity(tableName = "movies")
 data class Movie(
-    @PrimaryKey val uid: Int,
-    @ColumnInfo(name = "title") val title: String?,
-    @ColumnInfo(name = "posterPath") val posterPath: String?,
-    @ColumnInfo(name = "backdropPath") val backdropPath: String?,
-    @ColumnInfo(name = "rating") val rating: Double?,
-    @ColumnInfo(name = "overview") val overview: String?,
-    @ColumnInfo(name = "releaseDate") val releaseDate: String,
-    @ColumnInfo(name = "genre") val genre: String?
+    @PrimaryKey @field:SerializedName("id") val uid: Int,
+    @field:SerializedName("title") val title: String?,
+    @field:SerializedName("posterPath") val posterPath: String?,
+    @field:SerializedName("backdropPath") val backdropPath: String?,
+    @field:SerializedName("rating") val rating: Double?,
+    @field:SerializedName("overview") val overview: String?,
+    @field:SerializedName("releaseDate") val releaseDate: String,
+    @field:SerializedName("genre") val genre: String?
 )

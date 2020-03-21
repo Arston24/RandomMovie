@@ -8,13 +8,15 @@ import android.widget.ImageView
 import ru.arston.randommovie.Models.Movie
 import ru.arston.randommovie.R
 import android.widget.TextView
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.randommovie.DetailsActivity
 
 
-class MovieAdapter(private val movieList: List<Movie.Result>) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
+class MovieAdapter(private val movieList: List<Movie.Result>) : PagedListAdapter<Movie.Result, MovieAdapter.MovieViewHolder>(DIFF_UTIL) {
 
     class MovieViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
@@ -56,4 +58,14 @@ class MovieAdapter(private val movieList: List<Movie.Result>) : RecyclerView.Ada
     }
 
     override fun getItemCount() = movieList.size
+
+    companion object {
+        private val DIFF_UTIL = object : DiffUtil.ItemCallback<Movie.Result>() {
+            override fun areItemsTheSame(oldItem: Movie.Result, newItem: Movie.Result): Boolean =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(oldItem: Movie.Result, newItem: Movie.Result): Boolean =
+                oldItem.equals(newItem)
+        }
+    }
 }

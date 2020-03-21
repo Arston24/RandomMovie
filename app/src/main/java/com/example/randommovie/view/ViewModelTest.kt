@@ -10,7 +10,7 @@ class ViewModelTest: ViewModel(){
     private lateinit var movieList: LiveData<List<Movie.Result>?>
     private var repository = TestRepository()
 
-    fun getDataFromRetrofit(page: Int): LiveData<List<Movie.Result>?> {
+    fun getMovies(page: Int): LiveData<List<Movie.Result>?> {
         movieList = repository.getMovies(page)
         return movieList
     }

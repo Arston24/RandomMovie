@@ -36,7 +36,11 @@ class TopActivity : Fragment() {
     private lateinit var vmTest: ViewModelTest
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_top, container, false)
         vmTest = ViewModelProviders.of(this).get(ViewModelTest::class.java)
         binding.moviesList.layoutManager = LinearLayoutManager(context)
@@ -46,9 +50,10 @@ class TopActivity : Fragment() {
     }
 
     private fun getMovies() {
-        vmTest.getDataFromRetrofit(1).observe(this, Observer { data ->
+        vmTest.getMovies(1).observe(viewLifecycleOwner, Observer { data ->
             if (data != null) {
                 val movieAdapter = MovieAdapter(data)
+//                movieAdapter.submitList()
                 binding.moviesList.adapter = movieAdapter
                 Log.e("RESULT", data[1].title)
             } else Log.e("RESULT", "Empty data")
