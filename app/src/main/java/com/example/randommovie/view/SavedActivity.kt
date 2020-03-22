@@ -45,9 +45,6 @@ class SavedActivity : Fragment() {
             .build()
 
         db.movieDao().getFavoriteMovies().observe(viewLifecycleOwner, Observer {
-            it.forEach {
-                Log.e("fff", "movie $it")
-            }
             movieList = it
             val savedAdapter = SavedAdapter(movieList)
             binding.savedList.adapter = savedAdapter
