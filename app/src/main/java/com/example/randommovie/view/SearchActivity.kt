@@ -8,13 +8,14 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import com.example.randommovie.database.Movie
 import com.example.randommovie.view.adapters.MovieAdapter
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.example.randommovie.network.Api
 import ru.arston.randommovie.BuildConfig
-import ru.arston.randommovie.Models.Movie
+import ru.arston.randommovie.Models.MovieResponse
 import ru.arston.randommovie.R
 import kotlinx.coroutines.*
 
@@ -23,7 +24,7 @@ class SearchActivity : AppCompatActivity() {
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
 
-    lateinit var movieList: List<Movie.Result>
+    lateinit var movieResponseList: List<Movie>
     private lateinit var movieName: String
     lateinit var textResponse: TextView
 
@@ -59,9 +60,9 @@ class SearchActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val movieResponse = response.body()
 
-                    movieList = movieResponse?.results!!
-                    if (movieList.isNotEmpty()) {
-                        val movieAdapter = MovieAdapter(movieList)
+                    movieResponseList = movieResponse?.movies!!
+                    if (movieResponseList.isNotEmpty()) {
+                        val movieAdapter = MovieAdapter()
                         movieRecycler.adapter = movieAdapter
                     } else {
                         //textResponse.text = "Ничего не найдено!"

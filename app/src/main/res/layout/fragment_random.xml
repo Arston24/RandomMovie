@@ -71,11 +71,10 @@
                         android:layout_alignBottom="@+id/card_image"
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="0dp"
-                        android:layout_marginLeft="@dimen/md_keylines"
                         android:layout_marginBottom="-19dp"
                         android:singleLine="true"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="14sp"
                         tools:text="Название фильма" />
 

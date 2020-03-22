@@ -1,5 +1,6 @@
 package com.example.randommovie.network
 
+import com.example.randommovie.database.Movie
 import com.example.randommovie.models.Cast
 import com.example.randommovie.models.MovieDetails
 import com.example.randommovie.models.Person
@@ -17,7 +18,16 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.arston.randommovie.BuildConfig
 import ru.arston.randommovie.Models.Genre
-import ru.arston.randommovie.Models.Movie
+import ru.arston.randommovie.Models.MovieResponse
+
+
+suspend fun getMovies(
+    service: Api,
+    page: Int,
+    onSuccess: (repos: List<Movie>) -> Unit
+) {
+    onSuccess(service.getPopularMovies(page, BuildConfig.TMDB_API_KEY).body()?.movies ?: listOf())
+}
 
 interface Api {
 
@@ -30,21 +40,21 @@ interface Api {
         @Query("primary_release_year") year: String,
         @Query("region") region: String,
         @Query("api_key") api_key: String
-    ): Deferred<Response<Movie>>
+    ): Deferred<Response<MovieResponse>>
 
     @GET("discover/movie?language=ru-Ru&vote_average.gte=7")
     fun getAllMovieWithoutGenre(
         @Query("primary_release_year") year: String,
         @Query("region") region: String,
         @Query("api_key") api_key: String
-    ): Deferred<Response<Movie>>
+    ): Deferred<Response<MovieResponse>>
 
 
     @GET("movie/popular?language=ru-Ru")
-    fun getPopularMoviePages(@Query("api_key") api_key: String): Deferred<Response<List<Movie>>>
+    fun getPopularMoviePages(@Query("api_key") api_key: String): Deferred<Response<List<MovieResponse>>>
 
     @GET("movie/popular?language=ru-Ru")
-    fun getPopularMovie(@Query("page") page: Int, @Query("api_key") api_key: String): Deferred<Response<Movie>>
+    suspend fun getPopularMovies(@Query("page") page: Int, @Query("api_key") api_key: String): Response<MovieResponse>
 
     @GET("movie/{movie_id}?language=ru-Ru")
     fun getMovie(@Path("movie_id") movie_id: String, @Query("api_key") api_key: String): Deferred<Response<MovieDetails>>
@@ -56,7 +66,7 @@ interface Api {
         @Query("page") page: Int,
         @Query("region") region: String,
         @Query("api_key") api_key: String
-    ): Deferred<Response<Movie>>
+    ): Deferred<Response<MovieResponse>>
 
     @GET("discover/movie?language=ru-Ru&vote_average.gte=7")
     fun getWithoutGenre(
@@ -64,10 +74,10 @@ interface Api {
         @Query("page") page: Int,
         @Query("region") region: String,
         @Query("api_key") api_key: String
-    ): Deferred<Response<Movie>>
+    ): Deferred<Response<MovieResponse>>
 
     @GET("search/movie?language=ru-Ru")
-    fun getMovieSearch(@Query("query") query: String, @Query("api_key") api_key: String): Deferred<Response<Movie>>
+    fun getMovieSearch(@Query("query") query: String, @Query("api_key") api_key: String): Deferred<Response<MovieResponse>>
 
     @GET("movie/{movie_id}/credits?language=ru-Ru")
     fun getMovieCast(@Path("movie_id") movie_id: String, @Query("api_key") api_key: String): Deferred<Response<Cast>>
@@ -81,10 +91,12 @@ interface Api {
     companion object {
         fun create(): Api {
             val logger = HttpLoggingInterceptor()
-            logger.level = HttpLoggingInterceptor.Level.BASIC
+            logger.level = HttpLoggingInterceptor.Level.BODY
+
             val client = OkHttpClient.Builder()
                 .addInterceptor(logger)
                 .build()
+
             return Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
                 .client(client)

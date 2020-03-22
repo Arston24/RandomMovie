@@ -1,6 +1,5 @@
 package ru.arston.randommovie
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.randommovie.DetailsActivity
+import com.example.randommovie.database.Movie
 import com.example.randommovie.network.Api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -22,7 +22,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.arston.randommovie.Models.Genre
-import ru.arston.randommovie.Models.Movie
+import ru.arston.randommovie.Models.MovieResponse
 import ru.arston.randommovie.databinding.FragmentRandomBinding
 import java.util.*
 
@@ -35,7 +35,7 @@ class RandomActivity : Fragment() {
     private val imageUrl = "http://image.tmdb.org/t/p/w500"
 
     lateinit var genreList: List<Genre.Attributes>
-    lateinit var movieList: List<Movie.Result>
+    lateinit var movieResponseList: List<Movie>
     var page: Int = 0
 
     val years = ArrayList<String>()
@@ -124,7 +124,7 @@ class RandomActivity : Fragment() {
                     val response = randomMovieRequest.await()
                     if (response.isSuccessful) {
                         val movieResponse = response.body()
-                        movieList = movieResponse?.results!!
+                        movieResponseList = movieResponse?.movies!!
                         setAdapter()
 
                     } else {
@@ -156,7 +156,7 @@ class RandomActivity : Fragment() {
                     val response = movieRequest.await()
                     if (response.isSuccessful) {
                         val movieResponse = response.body()
-                        movieList = movieResponse?.results!!
+                        movieResponseList = movieResponse?.movies!!
                         setAdapter()
 
                     } else {
@@ -194,17 +194,17 @@ class RandomActivity : Fragment() {
 
 
     private fun setAdapter() {
-        val r = (0..movieList.size).random()
-        Glide.with(this).load(imageUrl + movieList[r].posterPath).diskCacheStrategy(
+        val r = (0..movieResponseList.size).random()
+        Glide.with(this).load(imageUrl + movieResponseList[r].posterPath).diskCacheStrategy(
             DiskCacheStrategy.ALL
         ).into(binding.cardImage)
-        binding.cardTitle.text = movieList[r].title
-        binding.movieRating.rating = (movieList[r].voteAverage!! / 2).toFloat()
+        binding.cardTitle.text = movieResponseList[r].title
+        binding.movieRating.rating = (movieResponseList[r].voteAverage!! / 2).toFloat()
 
         binding.cardView.setOnClickListener {
             val intent = Intent(activity, DetailsActivity::class.java)
-            intent.putExtra("MovieID", movieList[r].id.toString())
-            intent.putExtra("title", movieList[r].title)
+            intent.putExtra("MovieID", movieResponseList[r].id.toString())
+            intent.putExtra("title", movieResponseList[r].title)
             activity?.startActivity(intent)
         }
     }

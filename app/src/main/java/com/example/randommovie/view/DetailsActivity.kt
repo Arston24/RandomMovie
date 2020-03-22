@@ -8,7 +8,6 @@ import com.google.android.material.snackbar.Snackbar
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import android.widget.RatingBar
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
@@ -68,25 +67,14 @@ class DetailsActivity : AppCompatActivity() {
                             binding.bookmarkIcon, "Удалено из избранного",
                             Snackbar.LENGTH_SHORT
                         ).show()
-                        db.movieDao().delete(
-                            Movie(
-                                movieList[i].uid,
-                                movieList[i].title,
-                                movieList[i].posterPath,
-                                movieList[i].backdropPath,
-                                movieList[i].rating,
-                                movieList[i].overview,
-                                movieList[i].releaseDate,
-                                movieList[i].genre
-                            )
-                        )
+                        db.movieDao().deleteById(movieList[i].id)
                     }
 
                     binding.bookmarkIcon.setImageResource(R.mipmap.bookmark_pressed)
                     binding.movieDetailsTitle.text = movieList[i].title
                     binding.movieDetailsReleaseDate.text = movieList[i].releaseDate
                     binding.movieDetailsGenres.text = movieList[i].genre
-                    binding.movieDetailsRating.rating = (movieList[i].rating!!.div(2)).toFloat()
+                    binding.movieDetailsRating.rating = (movieList[i].voteAverage!!.div(2)).toFloat()
                     Glide.with(this@DetailsActivity)
                         .load("http://image.tmdb.org/t/p/w500" + movieList[i].backdropPath).diskCacheStrategy(
                             DiskCacheStrategy.ALL
@@ -149,18 +137,7 @@ class DetailsActivity : AppCompatActivity() {
                                 Snackbar.LENGTH_SHORT
                             ).show()
 
-                            db.movieDao().insertAll(
-                                Movie(
-                                    movieResponse.id,
-                                    movieResponse.title,
-                                    movieResponse.poster_path,
-                                    movieResponse.backdrop_path,
-                                    movieResponse.vote_average,
-                                    movieResponse.overview,
-                                    movieResponse.release_date,
-                                    movieResponse.genres[0].name
-                                )
-                            )
+//                            db.movieDao().insert(listOf(movieResponse))
 
                         } else {
                             Snackbar.make(
@@ -169,18 +146,7 @@ class DetailsActivity : AppCompatActivity() {
                             ).show()
                             pressed = false
                             binding.bookmarkIcon.setImageResource(R.mipmap.bookmark_unpressed)
-                            db.movieDao().delete(
-                                Movie(
-                                    movieResponse.id,
-                                    movieResponse.title,
-                                    movieResponse.poster_path,
-                                    movieResponse.backdrop_path,
-                                    movieResponse.vote_average,
-                                    movieResponse.overview,
-                                    movieResponse.release_date,
-                                    movieResponse.genres[0].name
-                                )
-                            )
+                            db.movieDao().deleteById(movieResponse.id)
                         }
                     }
 
