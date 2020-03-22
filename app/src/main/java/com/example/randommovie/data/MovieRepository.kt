@@ -26,8 +26,20 @@ class MovieRepository(
         return data
     }
 
-    fun getFavoriteMovies(): List<Movie> {
+    fun getMovieById(id: Int): LiveData<Movie> {
+        return cache.getMovieById(id)
+    }
+
+    fun getFavoriteMovies(): LiveData<List<Movie>> {
         return cache.getFavoriteMovies()
+    }
+
+    fun addToFavorite(id: Int) {
+        cache.addToFavorite(id)
+    }
+
+    fun removeFromFavorite(id: Int) {
+        cache.removeFromFavorite(id)
     }
 
     companion object {

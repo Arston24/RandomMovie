@@ -1,5 +1,6 @@
 package com.example.randommovie.database
 
+import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import java.util.concurrent.Executor
 
@@ -18,7 +19,19 @@ class MovieLocalCache(
         return movieDao.getMovies()
     }
 
-    fun getFavoriteMovies(): List<Movie> {
+    fun getMovieById(id: Int): LiveData<Movie> {
+        return movieDao.getMovieById(id)
+    }
+
+    fun getFavoriteMovies(): LiveData<List<Movie>> {
         return movieDao.getFavoriteMovies()
+    }
+
+    fun addToFavorite(id: Int) {
+        movieDao.addToFavorite(id)
+    }
+
+    fun removeFromFavorite(id: Int) {
+        movieDao.removeFromFavorite(id)
     }
 }

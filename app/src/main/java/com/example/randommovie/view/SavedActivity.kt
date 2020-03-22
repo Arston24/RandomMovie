@@ -1,11 +1,13 @@
 package com.example.randommovie
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.room.Room
 import com.example.randommovie.database.Movie
 import com.example.randommovie.database.MovieDatabase
@@ -19,7 +21,11 @@ class SavedActivity : Fragment() {
     lateinit var binding: FragmentSavedBinding
     lateinit var movieList: List<Movie>
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_saved, container, false)
 
 
@@ -29,16 +35,23 @@ class SavedActivity : Fragment() {
 
         binding.savedList.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
 
-        val db = Room.databaseBuilder(activity!!.applicationContext, MovieDatabase::class.java, "descriptionMovie")
+        val db = Room.databaseBuilder(
+            activity!!.applicationContext,
+            MovieDatabase::class.java,
+            "descriptionMovie"
+        )
             .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
             .build()
 
-        movieList = db.movieDao().getAll()
-
-        val savedAdapter = SavedAdapter(movieList)
-        binding.savedList.adapter = savedAdapter
-
+        db.movieDao().getFavoriteMovies().observe(viewLifecycleOwner, Observer {
+            it.forEach {
+                Log.e("fff", "movie $it")
+            }
+            movieList = it
+            val savedAdapter = SavedAdapter(movieList)
+            binding.savedList.adapter = savedAdapter
+        })
         return binding.root
 
     }

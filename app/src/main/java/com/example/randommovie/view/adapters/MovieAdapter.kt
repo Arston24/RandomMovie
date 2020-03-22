@@ -1,12 +1,14 @@
 package com.example.randommovie.view.adapters
 
 import android.content.Intent
+import android.util.Log
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.example.randommovie.DetailsActivity
 import com.example.randommovie.database.Movie
 import com.example.randommovie.view.TopMovieViewHolder
+import timber.log.Timber
 
 
 class MovieAdapter : PagedListAdapter<Movie, TopMovieViewHolder>(DIFF_UTIL) {
@@ -19,12 +21,12 @@ class MovieAdapter : PagedListAdapter<Movie, TopMovieViewHolder>(DIFF_UTIL) {
         val movie = getItem(position)
         movie?.let {
             holder.viewModel.bind(it)
-        }
-        holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView.context, DetailsActivity::class.java)
-            intent.putExtra("MovieID", movie?.id)
-            intent.putExtra("title", movie?.title)
-            holder.itemView.context.startActivity(intent)
+            holder.itemView.setOnClickListener {
+                val intent = Intent(holder.itemView.context, DetailsActivity::class.java)
+                intent.putExtra("MovieId", movie.id.toString())
+                intent.putExtra("title", movie.title)
+                holder.itemView.context.startActivity(intent)
+            }
         }
     }
 
