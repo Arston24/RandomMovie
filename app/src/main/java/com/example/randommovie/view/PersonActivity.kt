@@ -85,21 +85,12 @@ class PersonActivity : AppCompatActivity() {
 
             val personMovies = apiService.getPersonMovie(personID, apiKey)
             try {
-                Log.e("Фильмы актера: ", "в тру")
 
                 val response = personMovies.await()
-                Log.e("Фильмы актера: ", "в respe")
-                Log.e("Фильмы актера: ", response.body().toString())
-
-                //Log.e("Фильмы актера: ", response.body()?.result!![0].name.toString())
-
                 if (response.isSuccessful) {
                         movieList = response.body()?.cast!!
                     if (movieList.isNotEmpty()) {
-                        //Log.e("Фильмы актера: ", movieList[0].name)
-
                         personMovieLabel.visibility = View.VISIBLE
-                        //Log.e("Фильмы актера: ", movieList[0].name)
 
                         for (i in movieList.indices) {
                             var parent: View = layoutInflater.inflate(R.layout.cast_item, personMovie, false)
