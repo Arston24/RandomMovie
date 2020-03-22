@@ -1,9 +1,8 @@
-package com.example.randommovie.network.repository
+package com.example.randommovie.data
 
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.example.randommovie.data.MovieBoundaryCallback
 import com.example.randommovie.database.Movie
 import com.example.randommovie.database.MovieLocalCache
 import com.example.randommovie.network.Api
@@ -17,11 +16,18 @@ class MovieRepository(
         val dataSourceFactory = cache.getMovies()
         val boundaryCallback = MovieBoundaryCallback(apiService, cache)
 
-        val data = LivePagedListBuilder(dataSourceFactory, DATABASE_PAGE_SIZE)
+        val data = LivePagedListBuilder(
+            dataSourceFactory,
+            DATABASE_PAGE_SIZE
+        )
             .setBoundaryCallback(boundaryCallback)
             .build()
 
         return data
+    }
+
+    fun getFavoriteMovies(): List<Movie> {
+        return cache.getFavoriteMovies()
     }
 
     companion object {

@@ -12,7 +12,7 @@ import androidx.room.Room
 import com.example.randommovie.database.MovieDatabase
 import com.example.randommovie.database.MovieLocalCache
 import com.example.randommovie.network.Api
-import com.example.randommovie.network.repository.MovieRepository
+import com.example.randommovie.data.MovieRepository
 import com.example.randommovie.view.adapters.MovieAdapter
 import ru.arston.randommovie.databinding.FragmentTopBinding
 import java.util.concurrent.Executors

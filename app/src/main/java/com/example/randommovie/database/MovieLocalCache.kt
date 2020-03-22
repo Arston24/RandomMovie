@@ -1,6 +1,5 @@
 package com.example.randommovie.database
 
-import android.util.Log
 import androidx.paging.DataSource
 import java.util.concurrent.Executor
 
@@ -15,7 +14,11 @@ class MovieLocalCache(
         }
     }
 
-    fun getMovies(): DataSource.Factory<Int, Movie>{
+    fun getMovies(): DataSource.Factory<Int, Movie> {
         return movieDao.getMovies()
+    }
+
+    fun getFavoriteMovies(): List<Movie> {
+        return movieDao.getFavoriteMovies()
     }
 }

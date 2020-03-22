@@ -15,6 +15,9 @@ interface MovieDao {
     @Query("SELECT * FROM movies ORDER BY popularity DESC")
     fun getMovies(): DataSource.Factory<Int, Movie>
 
+    @Query("SELECT * FROM movies WHERE isFavorite=1")
+    fun getFavoriteMovies(): List<Movie>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movies: List<Movie>)
 

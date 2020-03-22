@@ -2,12 +2,10 @@ package com.example.randommovie.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.example.randommovie.database.Movie
-import com.example.randommovie.network.repository.MovieRepository
-import ru.arston.randommovie.Models.MovieResponse
+import com.example.randommovie.data.MovieRepository
 
 class MovieViewModel(val movieRepository: MovieRepository): ViewModel(){
 

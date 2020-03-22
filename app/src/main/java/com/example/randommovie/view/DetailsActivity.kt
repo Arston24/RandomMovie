@@ -53,14 +53,11 @@ class DetailsActivity : AppCompatActivity() {
             .build()
         movieList = db.movieDao().getAll()
 
-        // Если база данных содержит какие-либо фильмы,
-        // то проверяется есть ли необходимый фильм среди них
         if (movieList.isNotEmpty()) {
             for (i in movieList.indices) {
                 if (movieList[i].title == title) {
                     pressed = true
                     binding.bookmarkIcon.setOnClickListener {
-
                         pressed = false
                         binding.bookmarkIcon.setImageResource(R.mipmap.bookmark_unpressed)
                         Snackbar.make(
