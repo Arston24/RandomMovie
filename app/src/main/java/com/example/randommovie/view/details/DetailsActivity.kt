@@ -1,9 +1,12 @@
 package com.example.randommovie
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -13,6 +16,7 @@ import com.example.randommovie.database.MovieDatabase
 import com.example.randommovie.database.MovieLocalCache
 import com.example.randommovie.models.Cast
 import com.example.randommovie.network.Api
+import com.example.randommovie.view.details.CastAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -20,6 +24,7 @@ import kotlinx.coroutines.launch
 import ru.arston.randommovie.BuildConfig
 import ru.arston.randommovie.R
 import ru.arston.randommovie.databinding.ActivityDetailsBinding
+import timber.log.Timber
 import java.util.concurrent.Executors
 
 
@@ -29,17 +34,21 @@ class DetailsActivity : AppCompatActivity() {
 
     lateinit var movieRepository: MovieRepository
 
+    lateinit var castAdapter: CastAdapter
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
     lateinit var movieList: List<Movie>
-    private var castList: List<Cast.Result> = listOf()
+    private var castList: ArrayList<Cast> = arrayListOf()
     lateinit var movie: Movie
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
         val movieId = intent.extras?.getString("movieId")
-        val title = intent.extras?.getString("title")
+
+        castAdapter = CastAdapter()
+        binding.castList.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         val db = Room.databaseBuilder(this, MovieDatabase::class.java, "descriptionMovie")
             .fallbackToDestructiveMigration()
@@ -83,6 +92,18 @@ class DetailsActivity : AppCompatActivity() {
                 movieRepository.addToFavorite(movie)
             }
         }
+
+
+        GlobalScope.launch(Dispatchers.Main) {
+            movieId?.let {
+                movieRepository.getCast(movieId.toString())?.let {
+                    binding.castLabel.visibility = View.VISIBLE
+                    castList.addAll(it)
+                    castAdapter.castList = castList
+                    binding.castList.adapter = castAdapter
+                }
+            }
+        }
     }
 
 
@@ -91,6 +112,7 @@ class DetailsActivity : AppCompatActivity() {
         binding.movieDetailsGenres.text = movie.genre
         binding.movieDetailsReleaseDate.text = movie.releaseDate
         binding.movieDetailsRating.rating = movie.voteAverage?.div(2)?.toFloat() ?: 0f
+        binding.movieDetailsOverview.text = movie.overview
 
         if (movie.isFavorite) {
             binding.bookmarkIcon.background = getDrawable(R.drawable.bookmark_pressed_web)

@@ -5,6 +5,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.randommovie.database.Movie
 import com.example.randommovie.database.MovieLocalCache
+import com.example.randommovie.models.Cast
 import com.example.randommovie.network.Api
 import ru.arston.randommovie.BuildConfig
 
@@ -45,6 +46,10 @@ class MovieRepository(
 
     fun removeFromFavorite(id: Int) {
         cache.removeFromFavorite(id)
+    }
+
+    suspend fun getCast(id: String): List<Cast>? {
+        return apiService.getMovieCast(id, BuildConfig.TMDB_API_KEY).castList
     }
 
     companion object {

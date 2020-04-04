@@ -9,6 +9,7 @@
     <string name="genre">Жанр</string>
     <string name="year">Год</string>
     <string name="button_random">Подобрать</string>
+    <string name="cast_title">В главных ролях</string>
 
     <string-array name="movie_genres">
         <item>Жанр</item>

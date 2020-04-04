@@ -1,8 +1,7 @@
 package com.example.randommovie.network
 
 import com.example.randommovie.database.Movie
-import com.example.randommovie.models.Cast
-import com.example.randommovie.models.MovieDetails
+import com.example.randommovie.models.CastResponse
 import com.example.randommovie.models.Person
 import com.example.randommovie.models.PersonsMovie
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -26,7 +25,7 @@ suspend fun getMovies(
     page: Int,
     onSuccess: (repos: List<Movie>) -> Unit
 ) {
-    onSuccess(service.getPopularMovies(page, BuildConfig.TMDB_API_KEY).body()?.movies ?: listOf())
+    onSuccess(service.getPopularMovies(page, BuildConfig.TMDB_API_KEY).movies ?: listOf())
 }
 
 interface Api {
@@ -54,7 +53,7 @@ interface Api {
     fun getPopularMoviePages(@Query("api_key") api_key: String): Deferred<Response<List<MovieResponse>>>
 
     @GET("movie/popular?language=ru-Ru")
-    suspend fun getPopularMovies(@Query("page") page: Int, @Query("api_key") api_key: String): Response<MovieResponse>
+    suspend fun getPopularMovies(@Query("page") page: Int, @Query("api_key") api_key: String): MovieResponse
 
     @GET("movie/{movie_id}?language=ru-Ru")
     suspend fun getMovie(@Path("movie_id") movie_id: String, @Query("api_key") api_key: String): Movie
@@ -80,7 +79,7 @@ interface Api {
     fun getMovieSearch(@Query("query") query: String, @Query("api_key") api_key: String): Deferred<Response<MovieResponse>>
 
     @GET("movie/{movie_id}/credits?language=ru-Ru")
-    fun getMovieCast(@Path("movie_id") movie_id: String, @Query("api_key") api_key: String): Deferred<Response<Cast>>
+    suspend fun getMovieCast(@Path("movie_id") movie_id: String, @Query("api_key") api_key: String): CastResponse
 
     @GET("person/{person_id}?language=ru-Ru")
     fun getPersonDetails(@Path("person_id") person_id: String, @Query("api_key") api_key: String): Deferred<Response<Person>>

@@ -13,7 +13,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.randommovie.DetailsActivity
 import com.example.randommovie.models.*
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.ms.square.android.expandabletextview.ExpandableTextView
 import kotlinx.android.synthetic.main.activity_person.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -93,7 +92,7 @@ class PersonActivity : AppCompatActivity() {
                         personMovieLabel.visibility = View.VISIBLE
 
                         for (i in movieList.indices) {
-                            var parent: View = layoutInflater.inflate(R.layout.cast_item, personMovie, false)
+                            var parent: View = layoutInflater.inflate(R.layout.item_cast, personMovie, false)
                             var photoCast: ImageView = parent.findViewById(R.id.cast_photo)
                             var nameCast: TextView = parent.findViewById(R.id.cast_name)
                             var characterCast: TextView = parent.findViewById(R.id.cast_character)
