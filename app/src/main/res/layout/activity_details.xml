@@ -8,26 +8,24 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="256dp"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
+            android:layout_height="420dp"
+            android:fitsSystemWindows="true"
+            android:elevation="4dp">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/collapsingToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                app:contentScrim="@color/colorPrimary"
                 app:expandedTitleMarginEnd="64dp"
                 app:expandedTitleMarginStart="48dp"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
-
 
                 <ImageView
                     android:id="@+id/movieDetailsBackdrop"
@@ -37,12 +35,36 @@
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax" />
 
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="parallax" />
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/image_gradient"/>
+
+                <TextView
+                    android:id="@+id/movieDetailsTitle"
+                    android:layout_width="321dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:textColor="?attr/colorOnBackground"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="bottom" />
+
+                <ImageView
+                    android:id="@+id/bookmark_icon"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_gravity="bottom|end"
+                    app:srcCompat="@mipmap/bookmark_unpressed" />
+
+<!--                <androidx.appcompat.widget.Toolbar-->
+<!--                    android:id="@+id/toolbar"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="?attr/actionBarSize"-->
+<!--                    app:layout_collapseMode="parallax" />-->
 
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -57,31 +79,6 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/bookmark_icon"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:layout_marginStart="23dp"
-                    android:layout_marginEnd="3dp"
-                    android:layout_marginBottom="13dp"
-                    app:layout_constraintBottom_toTopOf="@+id/movieDetailsGenres"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/movieDetailsTitle"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@mipmap/bookmark_unpressed" />
-
-                <TextView
-                    android:id="@+id/movieDetailsTitle"
-                    android:layout_width="321dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:textColor="?attr/colorOnBackground"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/movieDetailsGenres"
@@ -126,10 +123,8 @@
                     android:layout_marginRight="16dp"
                     android:numStars="5"
                     android:theme="@style/RatingBar"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/movieDetailsTitle" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/summaryLabel"

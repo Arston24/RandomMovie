@@ -1,8 +1,10 @@
 package com.example.randommovie
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -18,6 +20,7 @@ import com.example.randommovie.models.Cast
 import com.example.randommovie.network.Api
 import com.example.randommovie.view.details.CastAdapter
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -45,6 +48,13 @@ class DetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
         val movieId = intent.extras?.getString("movieId")
+
+        this.window.apply {
+            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            statusBarColor = Color.TRANSPARENT
+        }
 
         castAdapter = CastAdapter()
         binding.castList.layoutManager =
@@ -121,7 +131,7 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         Glide.with(this@DetailsActivity)
-            .load("http://image.tmdb.org/t/p/w500" + movie.backdropPath)
+            .load("http://image.tmdb.org/t/p/original" + movie.backdropPath)
             .diskCacheStrategy(
                 DiskCacheStrategy.ALL
             ).into(binding.movieDetailsBackdrop)
