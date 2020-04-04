@@ -78,14 +78,14 @@ class DetailsActivity : AppCompatActivity() {
         binding.bookmarkIcon.setOnClickListener {
             if (movie.isFavorite) {
                 Snackbar.make(
-                    binding.bookmarkIcon, "Удалено из избранного",
+                    binding.bookmarkIcon, getString(R.string.removed_from_favorite),
                     Snackbar.LENGTH_SHORT
                 ).show()
                 movieRepository.removeFromFavorite(movie.id)
 
             } else {
                 Snackbar.make(
-                    binding.bookmarkIcon, "Добавлено в избранное",
+                    binding.bookmarkIcon, getString(R.string.added_to_favorite),
                     Snackbar.LENGTH_SHORT
                 ).show()
                 movie.isFavorite = true
