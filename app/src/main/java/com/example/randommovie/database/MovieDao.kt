@@ -22,8 +22,11 @@ interface MovieDao {
     @Query("SELECT * FROM movies WHERE isFavorite=1")
     fun getFavoriteMovies(): LiveData<List<Movie>>
 
-    @Query("UPDATE movies SET isFavorite=1 WHERE id=:id")
-    fun addToFavorite(id: Int)
+//    @Query("UPDATE movies SET isFavorite=1 WHERE id=:id")
+//    fun addToFavorite(id: Int)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addToFavorite(movie: Movie)
 
     @Query("UPDATE movies SET isFavorite=0 WHERE id=:id")
     fun removeFromFavorite(id: Int)

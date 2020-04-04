@@ -57,7 +57,7 @@ interface Api {
     suspend fun getPopularMovies(@Query("page") page: Int, @Query("api_key") api_key: String): Response<MovieResponse>
 
     @GET("movie/{movie_id}?language=ru-Ru")
-    fun getMovie(@Path("movie_id") movie_id: String, @Query("api_key") api_key: String): Deferred<Response<MovieDetails>>
+    suspend fun getMovie(@Path("movie_id") movie_id: String, @Query("api_key") api_key: String): Movie
 
     @GET("discover/movie?language=ru-Ru&vote_average.gte=7")
     fun getRandomMovie(

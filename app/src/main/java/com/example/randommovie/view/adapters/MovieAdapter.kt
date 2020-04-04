@@ -23,7 +23,7 @@ class MovieAdapter : PagedListAdapter<Movie, TopMovieViewHolder>(DIFF_UTIL) {
             holder.viewModel.bind(it)
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, DetailsActivity::class.java)
-                intent.putExtra("MovieId", movie.id.toString())
+                intent.putExtra("movieId", movie.id.toString())
                 intent.putExtra("title", movie.title)
                 holder.itemView.context.startActivity(intent)
             }

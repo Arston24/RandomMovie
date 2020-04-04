@@ -14,6 +14,9 @@ import com.example.randommovie.database.MovieLocalCache
 import com.example.randommovie.models.Cast
 import com.example.randommovie.network.Api
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import ru.arston.randommovie.BuildConfig
 import ru.arston.randommovie.R
 import ru.arston.randommovie.databinding.ActivityDetailsBinding
@@ -35,7 +38,7 @@ class DetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
-        val movieId = intent.extras?.getString("MovieId")
+        val movieId = intent.extras?.getString("movieId")
         val title = intent.extras?.getString("title")
 
         val db = Room.databaseBuilder(this, MovieDatabase::class.java, "descriptionMovie")
@@ -50,8 +53,17 @@ class DetailsActivity : AppCompatActivity() {
         )
 
         movieRepository.getMovieById(movieId?.toInt() ?: 0).observe(this, Observer {
-            bind(it)
-            movie = it
+            if (it != null) {
+                bind(it)
+                movie = it
+            } else {
+                GlobalScope.launch(Dispatchers.Main) {
+                    movieRepository.getMovie(movieId.toString())?.let { response ->
+                        movie = response
+                        bind(response)
+                    }
+                }
+            }
         })
 
         binding.bookmarkIcon.setOnClickListener {
@@ -67,7 +79,8 @@ class DetailsActivity : AppCompatActivity() {
                     binding.bookmarkIcon, "Добавлено в избранное",
                     Snackbar.LENGTH_SHORT
                 ).show()
-                movieRepository.addToFavorite(movie.id)
+                movie.isFavorite = true
+                movieRepository.addToFavorite(movie)
             }
         }
     }

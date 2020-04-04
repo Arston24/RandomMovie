@@ -30,7 +30,7 @@ class SavedAdapter(private val movieList: List<Movie>) : RecyclerView.Adapter<Sa
 
             view.setOnClickListener {
                 val intent = Intent(view.context, DetailsActivity::class.java)
-                intent.putExtra("MovieId", movieList.id.toString())
+                intent.putExtra("movieId", movieList.id.toString())
                 intent.putExtra("title", movieList.title)
                 view.context.startActivity(intent)
             }

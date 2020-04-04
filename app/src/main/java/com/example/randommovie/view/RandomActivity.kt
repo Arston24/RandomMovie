@@ -22,8 +22,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.arston.randommovie.Models.Genre
-import ru.arston.randommovie.Models.MovieResponse
 import ru.arston.randommovie.databinding.FragmentRandomBinding
+import timber.log.Timber
 import java.util.*
 
 
@@ -76,8 +76,9 @@ class RandomActivity : Fragment() {
         for (i in 1895..2019) years.add(i.toString())
         years.reverse()
         years.add(0, "Год")
-        binding.spinnerYear.adapter = ArrayAdapter(binding.spinnerYear.context, R.layout.item_spinner, years)
-        binding.spinnerYear?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spinnerYear.adapter =
+            ArrayAdapter(binding.spinnerYear.context, R.layout.item_spinner, years)
+        binding.spinnerYear.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
@@ -172,7 +173,11 @@ class RandomActivity : Fragment() {
     fun spinnerAdapter() {
 
         binding.spinnerGenre.adapter =
-            ArrayAdapter.createFromResource(binding.spinnerGenre.context, R.array.movie_genres, R.layout.item_spinner)
+            ArrayAdapter.createFromResource(
+                binding.spinnerGenre.context,
+                R.array.movie_genres,
+                R.layout.item_spinner
+            )
 
         binding.spinnerGenre?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -203,7 +208,7 @@ class RandomActivity : Fragment() {
 
         binding.cardView.setOnClickListener {
             val intent = Intent(activity, DetailsActivity::class.java)
-            intent.putExtra("MovieID", movieResponseList[r].id.toString())
+            intent.putExtra("movieId", movieResponseList[r].id.toString())
             intent.putExtra("title", movieResponseList[r].title)
             activity?.startActivity(intent)
         }

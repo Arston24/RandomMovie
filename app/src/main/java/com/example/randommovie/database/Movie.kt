@@ -16,5 +16,5 @@ data class Movie(
     @field:SerializedName("overview") val overview: String?,
     @field:SerializedName("release_date") val releaseDate: String?,
     @field:SerializedName("genre") val genre: String?,
-    val isFavorite: Boolean = false
+    var isFavorite: Boolean = false
 )

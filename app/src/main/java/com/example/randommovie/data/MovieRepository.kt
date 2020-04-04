@@ -6,6 +6,7 @@ import androidx.paging.PagedList
 import com.example.randommovie.database.Movie
 import com.example.randommovie.database.MovieLocalCache
 import com.example.randommovie.network.Api
+import ru.arston.randommovie.BuildConfig
 
 class MovieRepository(
     private val apiService: Api,
@@ -34,8 +35,12 @@ class MovieRepository(
         return cache.getFavoriteMovies()
     }
 
-    fun addToFavorite(id: Int) {
-        cache.addToFavorite(id)
+    suspend fun getMovie(id: String): Movie? {
+        return apiService.getMovie(id, BuildConfig.TMDB_API_KEY)
+    }
+
+    fun addToFavorite(movie: Movie) {
+        cache.addToFavorite(movie)
     }
 
     fun removeFromFavorite(id: Int) {

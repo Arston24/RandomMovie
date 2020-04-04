@@ -27,8 +27,8 @@ class MovieLocalCache(
         return movieDao.getFavoriteMovies()
     }
 
-    fun addToFavorite(id: Int) {
-        movieDao.addToFavorite(id)
+    fun addToFavorite(movie: Movie) {
+        movieDao.addToFavorite(movie)
     }
 
     fun removeFromFavorite(id: Int) {
