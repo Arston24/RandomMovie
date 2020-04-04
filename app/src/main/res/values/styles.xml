@@ -14,7 +14,8 @@
         <item name="backgroundColor">?attr/colorSurface</item>
     </style>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-    <style name="RatingBar" parent="Widget.AppCompat.RatingBar.Small">
+
+    <style name="ThemeOverlay.AppCompat.RatingBar" parent="Widget.AppCompat.RatingBar.Small">
         <item name="colorControlNormal">@color/rating_bar</item>
         <item name="colorControlActivated">@color/rating_bar</item>
     </style>

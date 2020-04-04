@@ -51,57 +51,57 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <RelativeLayout
-                    android:layout_width="250dp"
-                    android:layout_height="match_parent"
-                    android:background="?attr/colorSurface">
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:background="?attr/colorSurface">
 
                 <ImageView
-                        android:id="@+id/card_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/card_image_height"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginTop="0dp"
-                        android:background="@drawable/ic_launcher_background"
-                        android:scaleType="centerCrop" />
+                    android:id="@+id/card_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/card_image_height"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/ic_launcher_background"
+                    android:scaleType="centerCrop" />
 
                 <TextView
-                        android:id="@+id/card_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/card_image"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="0dp"
-                        android:layout_marginBottom="-19dp"
-                        android:singleLine="true"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="14sp"
-                        tools:text="Название фильма" />
+                    android:id="@+id/card_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/card_image"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginBottom="-19dp"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp"
+                    tools:text="Название фильма" />
 
                 <RatingBar
-                        android:id="@+id/movieRating"
-                        style="@style/RatingBar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="400dp"
-                        android:numStars="5"
-                        android:theme="@style/RatingBar" />
+                    android:id="@+id/movieRating"
+                    style="@style/ThemeOverlay.AppCompat.RatingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="400dp"
+                    android:numStars="5"
+                    android:theme="@style/ThemeOverlay.AppCompat.RatingBar" />
 
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
 
         <Button
-                android:id="@+id/button_random"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:background="#F42424"
-                android:text="@string/button_random"
-                android:textColor="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_view" />
+            android:id="@+id/button_random"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:background="#F42424"
+            android:text="@string/button_random"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
