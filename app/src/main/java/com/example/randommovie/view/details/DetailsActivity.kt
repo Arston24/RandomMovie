@@ -49,6 +49,9 @@ class DetailsActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
         val movieId = intent.extras?.getString("movieId")
 
+        binding.videoView.setVideoPath("http://78.tvmovies.in/DsfIs61CuF7j/show-tv-series/71")
+        binding.videoView.start()
+
         this.window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)

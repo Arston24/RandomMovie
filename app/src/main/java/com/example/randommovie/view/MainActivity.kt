@@ -1,21 +1,12 @@
 package ru.arston.randommovie
 
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.content.Context
 import android.content.Intent
-import android.graphics.*
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.*
-import android.view.animation.Interpolator
-import android.widget.LinearLayout
-import androidx.annotation.ColorRes
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
-import androidx.core.view.LayoutInflaterCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.randommovie.view.SearchActivity
@@ -23,7 +14,8 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.arston.randommovie.Adapters.SectionPagerAdapter
 import ru.arston.randommovie.databinding.ActivityMainBinding
-import kotlin.math.hypot
+import timber.log.Timber
+import timber.log.Timber.DebugTree
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,6 +25,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(DebugTree())
+        }
+
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 

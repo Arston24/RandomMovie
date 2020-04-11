@@ -15,8 +15,8 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="420dp"
-            android:fitsSystemWindows="true"
-            android:elevation="4dp">
+            android:elevation="4dp"
+            android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/collapsingToolbar"
@@ -39,32 +39,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
-                    android:background="@drawable/image_gradient"/>
+                    android:background="@drawable/image_gradient" />
 
                 <TextView
                     android:id="@+id/movieDetailsTitle"
                     android:layout_width="321dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
                     android:textColor="?attr/colorOnBackground"
                     android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="bottom" />
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/bookmark_icon"
                     android:layout_width="44dp"
                     android:layout_height="44dp"
-                    android:layout_marginEnd="3dp"
                     android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="3dp"
                     app:srcCompat="@mipmap/bookmark_unpressed" />
 
-<!--                <androidx.appcompat.widget.Toolbar-->
-<!--                    android:id="@+id/toolbar"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="?attr/actionBarSize"-->
-<!--                    app:layout_collapseMode="parallax" />-->
+                <!--                <androidx.appcompat.widget.Toolbar-->
+                <!--                    android:id="@+id/toolbar"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="?attr/actionBarSize"-->
+                <!--                    app:layout_collapseMode="parallax" />-->
 
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -113,6 +113,7 @@
 
                 <RatingBar
                     android:id="@+id/movieDetailsRating"
+                    style="@style/ThemeOverlay.AppCompat.RatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -122,7 +123,6 @@
                     android:layout_marginRight="16dp"
                     android:numStars="5"
                     android:theme="@style/ThemeOverlay.AppCompat.RatingBar"
-                    style="@style/ThemeOverlay.AppCompat.RatingBar"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -180,6 +180,13 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/castLabel" />
+
+                <VideoView
+                    android:id="@+id/videoView"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/castList" />
 
 
                 <!--                <HorizontalScrollView-->
