@@ -181,49 +181,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/castLabel" />
 
-                <VideoView
-                    android:id="@+id/videoView"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/castList" />
-
-
-                <!--                <HorizontalScrollView-->
-                <!--                    android:id="@+id/movieCastContainer"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginLeft="16dp"-->
-                <!--                    android:layout_marginTop="8dp"-->
-                <!--                    android:layout_marginRight="16dp"-->
-                <!--                    app:layout_constraintHorizontal_bias="0.0"-->
-                <!--                    app:layout_constraintLeft_toLeftOf="parent"-->
-                <!--                    app:layout_constraintRight_toRightOf="parent"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@+id/castLabel">-->
-
-                <!--                    <LinearLayout-->
-                <!--                        android:id="@+id/movieCast"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:orientation="horizontal" />-->
-                <!--                </HorizontalScrollView>-->
-
-                <!--                <TextView-->
-                <!--                    android:id="@+id/castLabel"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginLeft="16dp"-->
-                <!--                    android:layout_marginTop="32dp"-->
-                <!--                    android:layout_marginRight="16dp"-->
-                <!--                    android:text="В главных ролях"-->
-                <!--                    android:textColor="?attr/colorOnSurface"-->
-                <!--                    android:textSize="20sp"-->
-                <!--                    android:visibility="gone"-->
-                <!--                    app:layout_constraintLeft_toLeftOf="parent"-->
-                <!--                    app:layout_constraintRight_toRightOf="parent"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@+id/movieDetailsOverview" />-->
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
