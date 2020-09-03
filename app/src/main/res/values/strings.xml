@@ -12,6 +12,9 @@
     <string name="cast_title">В главных ролях</string>
     <string name="removed_from_favorite">Удалено из избранного</string>
     <string name="added_to_favorite">Добавлено в избранное</string>
+    <string name="random_movie_title">Подбор</string>
+    <string name="top_movies">Популярные</string>
+    <string name="profile_title">Профиль</string>
 
     <string-array name="movie_genres">
         <item>Жанр</item>

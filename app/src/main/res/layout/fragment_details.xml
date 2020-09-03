@@ -35,6 +35,14 @@
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax" />
 
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:background="@android:color/transparent"
+                    app:navigationIcon="@drawable/ic_back"
+                    android:layout_height="?android:attr/actionBarSize"
+                    app:titleTextColor="@android:color/white"/>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

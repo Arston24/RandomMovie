@@ -1,9 +1,9 @@
 package ru.arston.randommovie.Adapters
 
 import androidx.fragment.app.Fragment
-import com.example.randommovie.SavedActivity
-import ru.arston.randommovie.RandomActivity
-import ru.arston.randommovie.TopActivity
+import com.example.randommovie.SavedFragment
+import com.example.randommovie.ui.random.RandomMoviesFragment
+import com.example.randommovie.ui.popular.TopMoviesFragment
 
 class SectionPagerAdapter(fm: androidx.fragment.app.FragmentManager?) :
     androidx.fragment.app.FragmentPagerAdapter(fm!!) {
@@ -11,13 +11,13 @@ class SectionPagerAdapter(fm: androidx.fragment.app.FragmentManager?) :
     override fun getItem(position: Int): Fragment {
         when (position) {
             0 -> {
-                return RandomActivity()
+                return RandomMoviesFragment()
             }
             1 -> {
-                return TopActivity()
+                return TopMoviesFragment()
             }
             else -> {
-                return SavedActivity()
+                return SavedFragment()
             }
         }
     }

@@ -1,10 +1,10 @@
-package com.example.randommovie.view
+package com.example.randommovie.ui.popular
 
 import androidx.lifecycle.LiveData
 import com.example.randommovie.database.Movie
-import ru.arston.randommovie.Models.MovieResponse
+import com.example.randommovie.ui.BaseViewModel
 
-class TopActivityVM : BaseViewModel<Movie>() {
+class TopMoviesViewModel : BaseViewModel<Movie>() {
 
     private lateinit var movieResponseList: LiveData<List<Movie>>
     //private var repository = ApiRepository(Api.create())

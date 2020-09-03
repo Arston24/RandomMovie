@@ -1,7 +1,6 @@
 package com.example.randommovie
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +10,12 @@ import androidx.lifecycle.Observer
 import androidx.room.Room
 import com.example.randommovie.database.Movie
 import com.example.randommovie.database.MovieDatabase
-import com.example.randommovie.view.adapters.SavedAdapter
+import com.example.randommovie.ui.adapters.SavedAdapter
 import ru.arston.randommovie.R
 import ru.arston.randommovie.databinding.FragmentSavedBinding
 
 
-class SavedActivity : Fragment() {
+class SavedFragment : Fragment() {
 
     lateinit var binding: FragmentSavedBinding
     lateinit var movieList: List<Movie>

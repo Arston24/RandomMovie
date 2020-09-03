@@ -1,4 +1,4 @@
-package com.example.randommovie.view
+package com.example.randommovie.ui.popular
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

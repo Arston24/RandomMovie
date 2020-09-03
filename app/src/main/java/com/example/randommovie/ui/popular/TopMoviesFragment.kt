@@ -1,4 +1,4 @@
-package ru.arston.randommovie
+package com.example.randommovie.ui.popular
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,12 +13,13 @@ import com.example.randommovie.database.MovieDatabase
 import com.example.randommovie.database.MovieLocalCache
 import com.example.randommovie.network.Api
 import com.example.randommovie.data.MovieRepository
-import com.example.randommovie.view.adapters.MovieAdapter
+import com.example.randommovie.ui.adapters.MovieAdapter
+import ru.arston.randommovie.R
 import ru.arston.randommovie.databinding.FragmentTopBinding
 import java.util.concurrent.Executors
 
 
-class TopActivity : Fragment() {
+class TopMoviesFragment : Fragment() {
 
     private lateinit var binding: FragmentTopBinding
 
@@ -32,7 +33,7 @@ class TopActivity : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_top, container, false)
         binding.moviesList.layoutManager = LinearLayoutManager(context)
         val db = Room.databaseBuilder(
-            activity!!.applicationContext,
+            requireContext(),
             MovieDatabase::class.java,
             "descriptionMovie"
         )

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/top_list"
+    app:startDestination="@id/topMoviesFragment">
+
+    <fragment
+        android:id="@+id/topMoviesFragment"
+        android:name="com.example.randommovie.ui.popular.TopMoviesFragment"
+        android:label="TopMoviesFragment" >
+        <action
+            android:id="@+id/action_topMoviesFragment_to_detailsFragment2"
+            app:destination="@id/detailsFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment2"
+        android:name="com.example.randommovie.DetailsFragment" >
+        <argument
+            android:name="movieId"
+            app:argType="string" />
+    </fragment>
+</navigation>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/random"
+    app:startDestination="@id/randomFragment">
+
+    <fragment
+        android:id="@+id/randomFragment"
+        android:name="com.example.randommovie.ui.random.RandomMoviesFragment"
+        tools:layout="@layout/fragment_random">
+        <action
+            android:id="@+id/action_randomFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.randommovie.DetailsFragment"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="movieId"
+            app:argType="string" />
+    </fragment>
+
+
+</navigation>

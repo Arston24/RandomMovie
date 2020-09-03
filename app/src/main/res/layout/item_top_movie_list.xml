@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type="com.example.randommovie.view.TopMovieViewHolder.ViewModel" />
+            type="com.example.randommovie.ui.popular.TopMovieViewHolder.ViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView

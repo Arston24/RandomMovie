@@ -1,13 +1,18 @@
 package com.example.randommovie
 
+
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.bumptech.glide.Glide
@@ -18,22 +23,20 @@ import com.example.randommovie.database.MovieDatabase
 import com.example.randommovie.database.MovieLocalCache
 import com.example.randommovie.models.Cast
 import com.example.randommovie.network.Api
-import com.example.randommovie.view.details.CastAdapter
+import com.example.randommovie.ui.details.CastAdapter
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import ru.arston.randommovie.BuildConfig
 import ru.arston.randommovie.R
-import ru.arston.randommovie.databinding.ActivityDetailsBinding
-import timber.log.Timber
+import ru.arston.randommovie.databinding.FragmentDetailsBinding
 import java.util.concurrent.Executors
 
 
-class DetailsActivity : AppCompatActivity() {
+class DetailsFragment : Fragment() {
 
-    lateinit var binding: ActivityDetailsBinding
+    lateinit var binding: FragmentDetailsBinding
 
     lateinit var movieRepository: MovieRepository
 
@@ -44,26 +47,34 @@ class DetailsActivity : AppCompatActivity() {
     private var castList: ArrayList<Cast> = arrayListOf()
     lateinit var movie: Movie
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
-        val movieId = intent.extras?.getString("movieId")
+    private var statusBarColor = 0
 
-        this.window.apply {
-            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            statusBarColor = Color.TRANSPARENT
-        }
+    val args: DetailsFragmentArgs by navArgs()
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_details, container, false)
+        val movieId = args.movieId
+
+        NavigationUI.setupWithNavController(binding.toolbar, findNavController())
+
+        statusBarColor = activity?.window?.statusBarColor ?: 0
+        activity?.window?.statusBarColor = Color.TRANSPARENT
 
         castAdapter = CastAdapter()
         binding.castList.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        val db = Room.databaseBuilder(this, MovieDatabase::class.java, "descriptionMovie")
-            .fallbackToDestructiveMigration()
-            .allowMainThreadQueries()
-            .build()
+        val db =
+            Room.databaseBuilder(requireContext(), MovieDatabase::class.java, "descriptionMovie")
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
+                .build()
         movieList = db.movieDao().getAll()
 
         movieRepository = MovieRepository(
@@ -71,7 +82,7 @@ class DetailsActivity : AppCompatActivity() {
             MovieLocalCache(db.movieDao(), Executors.newSingleThreadExecutor())
         )
 
-        movieRepository.getMovieById(movieId?.toInt() ?: 0).observe(this, Observer {
+        movieRepository.getMovieById(movieId.toInt() ?: 0).observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 bind(it)
                 movie = it
@@ -114,6 +125,7 @@ class DetailsActivity : AppCompatActivity() {
                 }
             }
         }
+        return binding.root
     }
 
 
@@ -125,15 +137,23 @@ class DetailsActivity : AppCompatActivity() {
         binding.movieDetailsOverview.text = movie.overview
 
         if (movie.isFavorite) {
-            binding.bookmarkIcon.background = getDrawable(R.drawable.bookmark_pressed_web)
+            binding.bookmarkIcon.background =
+                ContextCompat.getDrawable(requireContext(), R.drawable.bookmark_pressed_web)
         } else {
-            binding.bookmarkIcon.background = getDrawable(R.drawable.bookmark_unpressed_web)
+            binding.bookmarkIcon.background =
+                ContextCompat.getDrawable(requireContext(), R.drawable.bookmark_unpressed_web)
         }
 
-        Glide.with(this@DetailsActivity)
-            .load("http://image.tmdb.org/t/p/original" + movie.backdropPath)
+        Glide.with(this@DetailsFragment)
+            .load("http://image.tmdb.org/t/p/w500" + movie.backdropPath)
             .diskCacheStrategy(
                 DiskCacheStrategy.ALL
             ).into(binding.movieDetailsBackdrop)
     }
+
+    override fun onDestroy() {
+        activity?.window?.statusBarColor = statusBarColor
+        super.onDestroy()
+    }
+
 }

@@ -1,14 +1,14 @@
-package com.example.randommovie.view.adapters
+package com.example.randommovie.ui.adapters
 
 import android.content.Intent
-import android.util.Log
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.example.randommovie.DetailsActivity
+import com.example.randommovie.DetailsFragment
 import com.example.randommovie.database.Movie
-import com.example.randommovie.view.TopMovieViewHolder
-import timber.log.Timber
+import com.example.randommovie.ui.popular.TopMovieViewHolder
+import com.example.randommovie.ui.popular.TopMoviesFragmentDirections
 
 
 class MovieAdapter : PagedListAdapter<Movie, TopMovieViewHolder>(DIFF_UTIL) {
@@ -22,10 +22,8 @@ class MovieAdapter : PagedListAdapter<Movie, TopMovieViewHolder>(DIFF_UTIL) {
         movie?.let {
             holder.viewModel.bind(it)
             holder.itemView.setOnClickListener {
-                val intent = Intent(holder.itemView.context, DetailsActivity::class.java)
-                intent.putExtra("movieId", movie.id.toString())
-                intent.putExtra("title", movie.title)
-                holder.itemView.context.startActivity(intent)
+                val action = TopMoviesFragmentDirections.actionTopMoviesFragmentToDetailsFragment2(movie.id.toString())
+                Navigation.findNavController(holder.itemView).navigate(action)
             }
         }
     }

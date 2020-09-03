@@ -1,11 +1,10 @@
-package com.example.randommovie.view.details
+package com.example.randommovie.ui.details
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ObservableField
 import androidx.recyclerview.widget.RecyclerView
 import com.example.randommovie.models.Cast
-import com.example.randommovie.models.CastResponse
 import ru.arston.randommovie.databinding.ItemCastBinding
 
 class CastViewHolder(binding: ItemCastBinding) : RecyclerView.ViewHolder(binding.root) {

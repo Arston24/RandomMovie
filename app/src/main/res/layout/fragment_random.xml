@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.randommovie.random.RandomMoviesFragment"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -10,7 +11,23 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/randomContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                app:title="@string/random_movie_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
 
         <Spinner
@@ -18,11 +35,11 @@
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:background="?attr/colorSurface"
             android:popupBackground="?attr/colorSurface"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/appBar">
 
         </Spinner>
 
@@ -30,12 +47,12 @@
             android:id="@+id/spinner_year"
             android:layout_width="150dp"
             android:layout_height="40dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="40dp"
             android:background="?attr/colorSurface"
             android:popupBackground="?attr/colorSurface"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/appBar">
 
         </Spinner>
 

@@ -16,9 +16,6 @@
         android:theme="@style/Theme.MyApp"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.example.randommovie.view.PersonActivity"></activity>
-        <activity android:name="com.example.randommovie.view.SearchActivity"></activity>
-        <activity android:name="com.example.randommovie.DetailsActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize">

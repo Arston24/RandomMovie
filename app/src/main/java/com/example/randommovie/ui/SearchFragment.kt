@@ -1,4 +1,4 @@
-package com.example.randommovie.view
+package com.example.randommovie.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,18 +9,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import com.example.randommovie.database.Movie
-import com.example.randommovie.view.adapters.MovieAdapter
+import com.example.randommovie.ui.adapters.MovieAdapter
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.example.randommovie.network.Api
 import ru.arston.randommovie.BuildConfig
-import ru.arston.randommovie.Models.MovieResponse
 import ru.arston.randommovie.R
 import kotlinx.coroutines.*
 
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : AppCompatActivity() {
     private val apiKey: String = BuildConfig.TMDB_API_KEY
     private val url = "https://api.themoviedb.org/3/"
 
@@ -30,7 +29,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        setContentView(R.layout.fragment_search)
 
         setUpToolbar()
 

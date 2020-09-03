@@ -1,4 +1,4 @@
-package com.example.randommovie.view
+package com.example.randommovie.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

@@ -1,4 +1,4 @@
-package com.example.randommovie.view.adapters
+package com.example.randommovie.ui.adapters
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import ru.arston.randommovie.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.randommovie.database.Movie
-import com.example.randommovie.DetailsActivity
+import com.example.randommovie.DetailsFragment
 
 
 class SavedAdapter(private val movieList: List<Movie>) : RecyclerView.Adapter<SavedAdapter.MovieViewHolder>() {
@@ -29,7 +29,7 @@ class SavedAdapter(private val movieList: List<Movie>) : RecyclerView.Adapter<Sa
 
 
             view.setOnClickListener {
-                val intent = Intent(view.context, DetailsActivity::class.java)
+                val intent = Intent(view.context, DetailsFragment::class.java)
                 intent.putExtra("movieId", movieList.id.toString())
                 intent.putExtra("title", movieList.title)
                 view.context.startActivity(intent)

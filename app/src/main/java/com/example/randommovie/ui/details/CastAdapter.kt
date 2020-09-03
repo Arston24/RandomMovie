@@ -1,6 +1,5 @@
-package com.example.randommovie.view.details
+package com.example.randommovie.ui.details
 
-import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.randommovie.models.Cast

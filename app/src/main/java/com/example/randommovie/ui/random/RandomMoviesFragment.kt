@@ -1,4 +1,4 @@
-package ru.arston.randommovie
+package com.example.randommovie.ui.random
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,9 +10,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.randommovie.DetailsActivity
+import com.example.randommovie.DetailsFragment
 import com.example.randommovie.database.Movie
 import com.example.randommovie.network.Api
 import kotlinx.coroutines.Dispatchers
@@ -21,13 +22,14 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import ru.arston.randommovie.BuildConfig
 import ru.arston.randommovie.Models.Genre
+import ru.arston.randommovie.R
 import ru.arston.randommovie.databinding.FragmentRandomBinding
-import timber.log.Timber
 import java.util.*
 
 
-class RandomActivity : Fragment() {
+class RandomMoviesFragment : Fragment() {
 
     lateinit var binding: FragmentRandomBinding
     private val apiKey: String = BuildConfig.TMDB_API_KEY
@@ -207,10 +209,8 @@ class RandomActivity : Fragment() {
         binding.movieRating.rating = (movieResponseList[r].voteAverage!! / 2).toFloat()
 
         binding.cardView.setOnClickListener {
-            val intent = Intent(activity, DetailsActivity::class.java)
-            intent.putExtra("movieId", movieResponseList[r].id.toString())
-            intent.putExtra("title", movieResponseList[r].title)
-            activity?.startActivity(intent)
+            val action = RandomMoviesFragmentDirections.actionRandomFragmentToDetailsFragment(movieResponseList[r].id.toString())
+            findNavController().navigate(action)
         }
     }
 }
