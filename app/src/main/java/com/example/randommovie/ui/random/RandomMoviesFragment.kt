@@ -181,7 +181,7 @@ class RandomMoviesFragment : Fragment() {
                 R.layout.item_spinner
             )
 
-        binding.spinnerGenre?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spinnerGenre.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
