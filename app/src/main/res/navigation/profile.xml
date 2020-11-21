@@ -5,6 +5,14 @@
 
     <fragment
         android:id="@+id/savedFragment"
-        android:name="com.example.randommovie.SavedFragment"
-        android:label="SavedFragment" />
+        android:name="com.victorsysuev.randommovie.ui.profile.ProfileFragment"
+        android:label="SavedFragment" >
+        <action
+            android:id="@+id/action_savedFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.victorsysuev.randommovie.ui.auth.LoginFragment"
+        android:label="LoginFragment" />
 </navigation>

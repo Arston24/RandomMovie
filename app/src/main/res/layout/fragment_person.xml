@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.randommovie.ui.PersonFragment">
+        tools:context="com.victorsysuev.randommovie.ui.PersonFragment">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

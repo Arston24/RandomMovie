@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/favorite"
+    app:startDestination="@id/favoriteMoviesFragment">
+
+    <fragment
+        android:id="@+id/favoriteMoviesFragment"
+        android:name="com.victorsysuev.randommovie.ui.favorite.FavoriteMoviesFragment"
+        android:label="FavoriteMoviesFragment" >
+        <action
+            android:id="@+id/action_favoriteMoviesFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        tools:layout="@layout/fragment_details"
+        android:name="com.victorsysuev.randommovie.DetailsFragment">
+    <argument
+        android:name="movieId"
+        app:argType="string" />
+    </fragment>
+</navigation>

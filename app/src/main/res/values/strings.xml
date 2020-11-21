@@ -15,6 +15,9 @@
     <string name="random_movie_title">Подбор</string>
     <string name="top_movies">Популярные</string>
     <string name="profile_title">Профиль</string>
+    <string name="favorite_title">Избранное</string>
+    <string name="login_button_title">Войти</string>
+    <string name="singup_title">Зарегистрироваться</string>
 
     <string-array name="movie_genres">
         <item>Жанр</item>
