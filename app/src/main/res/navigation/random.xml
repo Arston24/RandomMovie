@@ -21,6 +21,18 @@
         <argument
             android:name="movieId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detailsFragment_to_personFragment"
+            app:destination="@id/personFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/personFragment"
+        android:name="com.victorsysuev.randommovie.ui.PersonFragment"
+        android:label="PersonFragment" >
+        <argument
+            android:name="personId"
+            app:argType="string" />
     </fragment>
 
 

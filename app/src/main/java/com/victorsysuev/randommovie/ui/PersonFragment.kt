@@ -1,32 +1,31 @@
 package com.victorsysuev.randommovie.ui
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.victorsysuev.randommovie.DetailsFragment
-import com.victorsysuev.randommovie.models.*
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.victorsysuev.randommovie.models.PersonsCast
+import com.victorsysuev.randommovie.network.Api
 import kotlinx.android.synthetic.main.fragment_person.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.victorsysuev.randommovie.network.Api
 import ru.arston.randommovie.BuildConfig
 import ru.arston.randommovie.R
 import ru.arston.randommovie.databinding.FragmentPersonBinding
-import java.lang.Exception
 
 
-class PersonFragment : AppCompatActivity() {
+class PersonFragment : Fragment() {
     lateinit var binding: FragmentPersonBinding
     private lateinit var personID: String
 
@@ -35,25 +34,30 @@ class PersonFragment : AppCompatActivity() {
     private val imageUrl = "http://image.tmdb.org/t/p/w500"
     private var movieList: List<PersonsCast> = listOf()
 
+    val args: PersonFragmentArgs by navArgs()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.fragment_person)
 
-        personID = intent.extras?.getString("PersonID").toString()
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentPersonBinding.inflate(inflater, container, false)
         getPerson()
+        return binding.root
+
     }
 
     private fun getPerson() {
+        personID = args.personId
 
-        var retrofit: Retrofit = Retrofit.Builder()
+        val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
 
-        var apiService: Api = retrofit.create(Api::class.java)
+        val apiService: Api = retrofit.create(Api::class.java)
 
         GlobalScope.launch(Dispatchers.Main) {
 
@@ -66,15 +70,17 @@ class PersonFragment : AppCompatActivity() {
                     binding.nameText.text = personList!!.name
                     binding.departmentText.text = personList.knownForDepartment
                     if (personList.birthday!!.isNotEmpty()) {
-                        binding.birthdayText.text = "День рождения: " + personList.birthday + ", " + personList.placeOfBirth
+                        binding.birthdayText.text =
+                            "День рождения: " + personList.birthday + ", " + personList.placeOfBirth
                     }
                     if (personList.biography!!.isNotEmpty()) {
                         binding.biographyLabel.visibility = View.VISIBLE
                         binding.biographyText.text = personList.biography + " "
                     }
-                    Glide.with(this@PersonFragment).load(imageUrl + personList.profilePath).diskCacheStrategy(
-                        DiskCacheStrategy.ALL
-                    ).into(binding.profileImage)
+                    Glide.with(this@PersonFragment).load(imageUrl + personList.profilePath)
+                        .diskCacheStrategy(
+                            DiskCacheStrategy.ALL
+                        ).into(binding.profileImage)
 
                 } else {
                     Log.e("Ошибка! ", response.errorBody().toString())
@@ -87,12 +93,13 @@ class PersonFragment : AppCompatActivity() {
 
                 val response = personMovies.await()
                 if (response.isSuccessful) {
-                        movieList = response.body()?.cast!!
+                    movieList = response.body()?.cast!!
                     if (movieList.isNotEmpty()) {
                         personMovieLabel.visibility = View.VISIBLE
 
                         for (i in movieList.indices) {
-                            var parent: View = layoutInflater.inflate(R.layout.item_cast, personMovie, false)
+                            var parent: View =
+                                layoutInflater.inflate(R.layout.item_cast, personMovie, false)
                             var photoCast: ImageView = parent.findViewById(R.id.cast_photo)
                             var nameCast: TextView = parent.findViewById(R.id.cast_name)
                             var characterCast: TextView = parent.findViewById(R.id.cast_character)
@@ -105,11 +112,11 @@ class PersonFragment : AppCompatActivity() {
                                     DiskCacheStrategy.ALL
                                 ).into(photoCast)
 
-                            photoCast.setOnClickListener {
-                                val intent = Intent(this@PersonFragment, DetailsFragment::class.java)
-                                intent.putExtra("MovieID", movieList[i].id.toString())
-                                this@PersonFragment.startActivity(intent)
-                            }
+//                            photoCast.setOnClickListener {
+//                                val intent = Intent(this@PersonFragment, DetailsFragment::class.java)
+//                                intent.putExtra("MovieID", movieList[i].id.toString())
+//                                this@PersonFragment.startActivity(intent)
+//                            }
 
                             personMovie.addView(parent)
                         }
