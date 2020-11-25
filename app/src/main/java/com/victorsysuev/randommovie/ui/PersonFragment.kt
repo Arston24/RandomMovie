@@ -41,7 +41,7 @@ class PersonFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPersonBinding.inflate(inflater, container, false)
         getPerson()
         return binding.root
