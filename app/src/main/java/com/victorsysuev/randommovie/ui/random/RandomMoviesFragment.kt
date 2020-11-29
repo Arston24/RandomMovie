@@ -25,6 +25,7 @@ import ru.arston.randommovie.BuildConfig
 import ru.arston.randommovie.Models.Genre
 import ru.arston.randommovie.R
 import ru.arston.randommovie.databinding.FragmentRandomBinding
+import timber.log.Timber
 import java.util.*
 
 
@@ -50,7 +51,7 @@ class RandomMoviesFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_random, container, false)
 
         binding.buttonRandom.setOnClickListener {
@@ -114,7 +115,7 @@ class RandomMoviesFragment : Fragment() {
 
 
                     } else {
-                        Log.e("MainActivity ", response.errorBody().toString())
+                        Timber.e(response.errorBody().toString())
                     }
                 } catch (e: Exception) {
 
@@ -130,7 +131,7 @@ class RandomMoviesFragment : Fragment() {
                         setAdapter()
 
                     } else {
-                        Log.e("MainActivity ", response.errorBody().toString())
+                        Timber.e(response.errorBody().toString())
                     }
                 } catch (e: Exception) {
 
@@ -147,7 +148,7 @@ class RandomMoviesFragment : Fragment() {
 
 
                     } else {
-                        Log.e("MainActivity ", response.errorBody().toString())
+                        Timber.e(response.errorBody().toString())
                     }
                 } catch (e: Exception) {
 
@@ -162,7 +163,7 @@ class RandomMoviesFragment : Fragment() {
                         setAdapter()
 
                     } else {
-                        Log.e("MainActivity ", response.errorBody().toString())
+                        Timber.e(response.errorBody().toString())
                     }
                 } catch (e: Exception) {
 
