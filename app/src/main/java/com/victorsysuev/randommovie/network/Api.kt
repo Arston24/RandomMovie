@@ -5,6 +5,7 @@ import com.victorsysuev.randommovie.database.Movie
 import com.victorsysuev.randommovie.models.CastResponse
 import com.victorsysuev.randommovie.models.Person
 import com.victorsysuev.randommovie.models.PersonsMovie
+import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -12,6 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import ru.arston.randommovie.BuildConfig
@@ -33,19 +35,19 @@ interface Api {
     fun getGenres(@Query("api_key") api_key: String): Call<Genre>
 
     @GET("discover/movie?language=ru-Ru&vote_average.gte=7")
-    fun getAllMovie(
+    fun getAllMovies(
         @Query("with_genres") genre: Int,
         @Query("primary_release_year") year: String,
         @Query("region") region: String,
         @Query("api_key") api_key: String
-    ): Deferred<Response<MovieResponse>>
+    ): Single<Response<MovieResponse>>
 
     @GET("discover/movie?language=ru-Ru&vote_average.gte=7")
     fun getAllMovieWithoutGenre(
         @Query("primary_release_year") year: String,
         @Query("region") region: String,
         @Query("api_key") api_key: String
-    ): Deferred<Response<MovieResponse>>
+    ): Single<Response<MovieResponse>>
 
 
     @GET("movie/popular?language=ru-Ru")
@@ -70,7 +72,7 @@ interface Api {
         @Query("page") page: Int,
         @Query("region") region: String,
         @Query("api_key") api_key: String
-    ): Deferred<Response<MovieResponse>>
+    ): Single<Response<MovieResponse>>
 
     @GET("discover/movie?language=ru-Ru&vote_average.gte=7")
     fun getWithoutGenre(
@@ -78,7 +80,7 @@ interface Api {
         @Query("page") page: Int,
         @Query("region") region: String,
         @Query("api_key") api_key: String
-    ): Deferred<Response<MovieResponse>>
+    ): Single<Response<MovieResponse>>
 
     @GET("search/movie?language=ru-Ru")
     fun getMovieSearch(
@@ -137,8 +139,8 @@ interface Api {
             return Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
                 .client(client)
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .build()
                 .create(Api::class.java)
         }

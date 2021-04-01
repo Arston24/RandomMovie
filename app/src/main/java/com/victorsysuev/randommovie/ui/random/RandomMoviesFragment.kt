@@ -1,7 +1,6 @@
 package com.victorsysuev.randommovie.ui.random
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.victorsysuev.randommovie.database.Movie
 import com.victorsysuev.randommovie.network.Api
-import com.victorsysuev.randommovie.repository.UserRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +28,6 @@ class RandomMoviesFragment : Fragment() {
 
     lateinit var binding: FragmentRandomBinding
     private val apiKey: String = BuildConfig.TMDB_API_KEY
-    private val url = "https://api.themoviedb.org/3/"
     private val imageUrl = "http://image.tmdb.org/t/p/w500"
 
     lateinit var genreList: List<Genre.Attributes>
@@ -102,74 +96,67 @@ class RandomMoviesFragment : Fragment() {
 
     private fun getMovie() {
 
-        GlobalScope.launch(Dispatchers.Main) {
             // Если выбран какой-либо жанр
             if (genreID != 0) {
-                val allMovieRequest = apiService.getAllMovie(genreID, movieYear, "US", apiKey)
+                val allMovieRequest = apiService.getAllMovies(genreID, movieYear, "US", apiKey).blockingGet()
                 try {
-                    val response = allMovieRequest.await()
-                    if (response.isSuccessful) {
-                        if (response.body()?.totalPages!! <= 1000) {
-                            page = (1..response.body()?.totalPages!!).random()
+                    if (allMovieRequest.isSuccessful) {
+                        if (allMovieRequest.body()?.totalPages!! <= 1000) {
+                            page = (1..allMovieRequest.body()?.totalPages!!).random()
                         } else page = (1..1000).random()
 
 
                     } else {
-                        Timber.e(response.errorBody().toString())
+                        Timber.e(allMovieRequest.errorBody().toString())
                     }
                 } catch (e: Exception) {
 
                 }
 
-                val randomMovieRequest =
-                    apiService.getRandomMovie(genreID, movieYear, page, "US", apiKey)
+                val randomMovieRequest = apiService.getRandomMovie(genreID, movieYear, page, "US", apiKey).blockingGet()
                 try {
-                    val response = randomMovieRequest.await()
-                    if (response.isSuccessful) {
-                        val movieResponse = response.body()
+                    if (randomMovieRequest.isSuccessful) {
+                        val movieResponse = randomMovieRequest.body()
                         movieResponseList = movieResponse?.movies!!
                         setAdapter()
 
                     } else {
-                        Timber.e(response.errorBody().toString())
+                        Timber.e(randomMovieRequest.errorBody().toString())
                     }
                 } catch (e: Exception) {
 
                 }
                 // Если жанр не выбран
             } else {
-                val allMovieRequest = apiService.getAllMovieWithoutGenre(movieYear, "US", apiKey)
+                val allMovieRequest = apiService.getAllMovieWithoutGenre(movieYear, "US", apiKey).blockingGet()
                 try {
-                    val response = allMovieRequest.await()
-                    if (response.isSuccessful) {
-                        if (response.body()?.totalPages!! <= 1000) {
-                            page = (1..response.body()?.totalPages!!).random()
+                    if (allMovieRequest.isSuccessful) {
+                        if (allMovieRequest.body()?.totalPages!! <= 1000) {
+                            page = (1..allMovieRequest.body()?.totalPages!!).random()
                         } else page = (1..1000).random()
 
 
                     } else {
-                        Timber.e(response.errorBody().toString())
+                        Timber.e(allMovieRequest.errorBody().toString())
                     }
                 } catch (e: Exception) {
 
                 }
 
-                val movieRequest = apiService.getWithoutGenre(movieYear, page, "US", apiKey)
+                val movieRequest = apiService.getWithoutGenre(movieYear, page, "US", apiKey).blockingGet()
                 try {
-                    val response = movieRequest.await()
-                    if (response.isSuccessful) {
-                        val movieResponse = response.body()
+                    if (movieRequest.isSuccessful) {
+                        val movieResponse = movieRequest.body()
                         movieResponseList = movieResponse?.movies!!
                         setAdapter()
 
                     } else {
-                        Timber.e(response.errorBody().toString())
+                        Timber.e(movieRequest.errorBody().toString())
                     }
                 } catch (e: Exception) {
 
                 }
             }
-        }
     }
 
     fun spinnerAdapter() {
