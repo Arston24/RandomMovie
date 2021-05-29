@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.snackbar.Snackbar
 import com.victorsysuev.randommovie.data.MovieRepository
 import com.victorsysuev.randommovie.database.Movie
 import com.victorsysuev.randommovie.database.MovieDatabase
@@ -24,7 +25,6 @@ import com.victorsysuev.randommovie.database.MovieLocalCache
 import com.victorsysuev.randommovie.models.Cast
 import com.victorsysuev.randommovie.network.Api
 import com.victorsysuev.randommovie.ui.details.CastAdapter
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -116,7 +116,7 @@ class DetailsFragment : Fragment() {
 
 
         GlobalScope.launch(Dispatchers.Main) {
-            movieId?.let {
+            movieId.let {
                 movieRepository.getCast(movieId.toString())?.let {
                     binding.castLabel.visibility = View.VISIBLE
                     castList.addAll(it)
@@ -137,11 +137,16 @@ class DetailsFragment : Fragment() {
         binding.movieDetailsOverview.text = movie.overview
 
         if (movie.isFavorite) {
-            binding.bookmarkIcon.background =
-                ContextCompat.getDrawable(requireContext(), R.drawable.bookmark_pressed_web)
+            context?.let {
+                binding.bookmarkIcon.background =
+                    ContextCompat.getDrawable(it, R.drawable.bookmark_pressed_web)
+            }
         } else {
-            binding.bookmarkIcon.background =
-                ContextCompat.getDrawable(requireContext(), R.drawable.bookmark_unpressed_web)
+            context?.let {
+                binding.bookmarkIcon.background =
+                    ContextCompat.getDrawable(it, R.drawable.bookmark_unpressed_web)
+            }
+
         }
 
         Glide.with(this@DetailsFragment)

@@ -25,11 +25,13 @@ class MainActivity : AppCompatActivity() {
             Timber.plant(DebugTree())
         }
         setContentView(R.layout.activity_main)
-        (application as App).preferenceRepository
-            .nightModeLive.observe(this, Observer { nightMode ->
-                nightMode?.let { AppCompatDelegate.setDefaultNightMode(it) }
-            })
+//        (application as App).preferenceRepository
+//            .nightModeLive.observe(this, Observer { nightMode ->
+//                nightMode?.let { AppCompatDelegate.setDefaultNightMode(it) }
+//            })
 
+        AppCompatDelegate.setDefaultNightMode(
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         setupBottomNavigationBar()
 
     }
