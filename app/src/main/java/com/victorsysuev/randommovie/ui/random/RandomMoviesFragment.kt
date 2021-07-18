@@ -96,67 +96,71 @@ class RandomMoviesFragment : Fragment() {
 
     private fun getMovie() {
 
-            // Если выбран какой-либо жанр
-            if (genreID != 0) {
-                val allMovieRequest = apiService.getAllMovies(genreID, movieYear, "US", apiKey).blockingGet()
-                try {
-                    if (allMovieRequest.isSuccessful) {
-                        if (allMovieRequest.body()?.totalPages!! <= 1000) {
-                            page = (1..allMovieRequest.body()?.totalPages!!).random()
-                        } else page = (1..1000).random()
+        // Если выбран какой-либо жанр
+        if (genreID != 0) {
+            try {
+                val allMovieRequest =
+                    apiService.getAllMovies(genreID, movieYear, "US", apiKey).blockingGet()
+                if (allMovieRequest.isSuccessful) {
+                    if (allMovieRequest.body()?.totalPages!! <= 1000) {
+                        page = (1..allMovieRequest.body()?.totalPages!!).random()
+                    } else page = (1..1000).random()
 
 
-                    } else {
-                        Timber.e(allMovieRequest.errorBody().toString())
-                    }
-                } catch (e: Exception) {
-
+                } else {
+                    Timber.e(allMovieRequest.errorBody().toString())
                 }
-
-                val randomMovieRequest = apiService.getRandomMovie(genreID, movieYear, page, "US", apiKey).blockingGet()
-                try {
-                    if (randomMovieRequest.isSuccessful) {
-                        val movieResponse = randomMovieRequest.body()
-                        movieResponseList = movieResponse?.movies!!
-                        setAdapter()
-
-                    } else {
-                        Timber.e(randomMovieRequest.errorBody().toString())
-                    }
-                } catch (e: Exception) {
-
-                }
-                // Если жанр не выбран
-            } else {
-                val allMovieRequest = apiService.getAllMovieWithoutGenre(movieYear, "US", apiKey).blockingGet()
-                try {
-                    if (allMovieRequest.isSuccessful) {
-                        if (allMovieRequest.body()?.totalPages!! <= 1000) {
-                            page = (1..allMovieRequest.body()?.totalPages!!).random()
-                        } else page = (1..1000).random()
-
-
-                    } else {
-                        Timber.e(allMovieRequest.errorBody().toString())
-                    }
-                } catch (e: Exception) {
-
-                }
-
-                val movieRequest = apiService.getWithoutGenre(movieYear, page, "US", apiKey).blockingGet()
-                try {
-                    if (movieRequest.isSuccessful) {
-                        val movieResponse = movieRequest.body()
-                        movieResponseList = movieResponse?.movies!!
-                        setAdapter()
-
-                    } else {
-                        Timber.e(movieRequest.errorBody().toString())
-                    }
-                } catch (e: Exception) {
-
-                }
+            } catch (e: Exception) {
+                Timber.e(e)
             }
+
+            try {
+                val randomMovieRequest =
+                    apiService.getRandomMovie(genreID, movieYear, page, "US", apiKey).blockingGet()
+                if (randomMovieRequest.isSuccessful) {
+                    val movieResponse = randomMovieRequest.body()
+                    movieResponseList = movieResponse?.movies!!
+                    setAdapter()
+
+                } else {
+                    Timber.e(randomMovieRequest.errorBody().toString())
+                }
+            } catch (e: Exception) {
+
+            }
+            // Если жанр не выбран
+        } else {
+            val allMovieRequest =
+                apiService.getAllMovieWithoutGenre(movieYear, "US", apiKey).blockingGet()
+            try {
+                if (allMovieRequest.isSuccessful) {
+                    if (allMovieRequest.body()?.totalPages!! <= 1000) {
+                        page = (1..allMovieRequest.body()?.totalPages!!).random()
+                    } else page = (1..1000).random()
+
+
+                } else {
+                    Timber.e(allMovieRequest.errorBody().toString())
+                }
+            } catch (e: Exception) {
+
+            }
+
+            val movieRequest =
+                apiService.getWithoutGenre(movieYear, page, "US", apiKey).blockingGet()
+            try {
+                if (movieRequest.isSuccessful) {
+                    val movieResponse = movieRequest.body()
+                    movieResponseList = movieResponse?.movies!!
+                    setAdapter()
+
+                } else {
+                    Timber.e(movieRequest.errorBody().toString())
+                }
+            } catch (e: Exception) {
+
+            }
+        }
     }
 
     fun spinnerAdapter() {
@@ -195,7 +199,9 @@ class RandomMoviesFragment : Fragment() {
         binding.movieRating.rating = (movieResponseList[r].voteAverage!! / 2).toFloat()
 
         binding.cardView.setOnClickListener {
-            val action = RandomMoviesFragmentDirections.actionRandomFragmentToDetailsFragment(movieResponseList[r].id.toString())
+            val action = RandomMoviesFragmentDirections.actionRandomFragmentToDetailsFragment(
+                movieResponseList[r].id.toString()
+            )
             findNavController().navigate(action)
         }
     }

@@ -5,17 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
+import com.victorsysuev.randommovie.App
 import com.victorsysuev.randommovie.data.MovieRepository
-import com.victorsysuev.randommovie.database.MovieDatabase
-import com.victorsysuev.randommovie.database.MovieLocalCache
-import com.victorsysuev.randommovie.network.Api
 import ru.arston.randommovie.databinding.FragmentFavoriteBinding
-import java.util.concurrent.Executors
+import javax.inject.Inject
 
 
 class FavoriteMoviesFragment : Fragment() {
@@ -23,26 +17,23 @@ class FavoriteMoviesFragment : Fragment() {
     lateinit var binding: FragmentFavoriteBinding
     lateinit var adapter: FavoriteAdapter
 
+    @Inject
+    lateinit var movieRepository: MovieRepository
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (context?.applicationContext as App).appComponent.inject(this)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         binding.favoriteList.layoutManager = GridLayoutManager(this.context, 3)
 
-        val db =
-            Room.databaseBuilder(requireContext(), MovieDatabase::class.java, "descriptionMovie")
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
-                .build()
-
-        val movieRepository = MovieRepository(
-            Api.create(),
-            MovieLocalCache(db.movieDao(), Executors.newSingleThreadExecutor())
-        )
-
-        movieRepository.getFavoriteMovies().observe(viewLifecycleOwner, Observer {
+        movieRepository.getFavoriteMovies().observe(viewLifecycleOwner, {
             adapter = FavoriteAdapter(it)
             binding.favoriteList.adapter = adapter
         })

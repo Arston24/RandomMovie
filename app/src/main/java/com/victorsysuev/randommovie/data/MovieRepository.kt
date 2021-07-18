@@ -18,14 +18,12 @@ class MovieRepository(
         val dataSourceFactory = cache.getMovies()
         val boundaryCallback = MovieBoundaryCallback(apiService, cache)
 
-        val data = LivePagedListBuilder(
+        return LivePagedListBuilder(
             dataSourceFactory,
             DATABASE_PAGE_SIZE
         )
             .setBoundaryCallback(boundaryCallback)
             .build()
-
-        return data
     }
 
     fun getMovieById(id: Int): LiveData<Movie> {

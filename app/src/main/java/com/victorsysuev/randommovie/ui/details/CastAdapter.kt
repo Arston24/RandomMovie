@@ -3,9 +3,7 @@ package com.victorsysuev.randommovie.ui.details
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.victorsysuev.randommovie.DetailsFragmentDirections
 import com.victorsysuev.randommovie.models.Cast
-import com.victorsysuev.randommovie.ui.random.RandomMoviesFragmentDirections
 
 class CastAdapter : RecyclerView.Adapter<CastViewHolder>() {
 

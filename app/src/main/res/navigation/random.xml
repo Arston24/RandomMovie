@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.victorsysuev.randommovie.DetailsFragment"
+        android:name="com.victorsysuev.randommovie.ui.details.DetailsFragment"
         tools:layout="@layout/fragment_details" >
         <argument
             android:name="movieId"

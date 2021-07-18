@@ -8,42 +8,33 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
-import com.victorsysuev.randommovie.database.MovieDatabase
-import com.victorsysuev.randommovie.database.MovieLocalCache
-import com.victorsysuev.randommovie.network.Api
+import com.victorsysuev.randommovie.App
 import com.victorsysuev.randommovie.data.MovieRepository
 import com.victorsysuev.randommovie.ui.adapters.MovieAdapter
 import ru.arston.randommovie.R
 import ru.arston.randommovie.databinding.FragmentTopBinding
-import java.util.concurrent.Executors
+import javax.inject.Inject
 
 
 class TopMoviesFragment : Fragment() {
 
     private lateinit var binding: FragmentTopBinding
 
+    @Inject
     lateinit var movieRepository: MovieRepository
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (context?.applicationContext as App).appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_top, container, false)
         binding.moviesList.layoutManager = LinearLayoutManager(context)
-        val db = Room.databaseBuilder(
-            requireContext(),
-            MovieDatabase::class.java,
-            "descriptionMovie"
-        )
-            .fallbackToDestructiveMigration()
-            .allowMainThreadQueries()
-            .build()
-        movieRepository = MovieRepository(
-            Api.create(),
-            MovieLocalCache(db.movieDao(), Executors.newSingleThreadExecutor())
-        )
         getMovies()
         return binding.root
     }
@@ -51,7 +42,7 @@ class TopMoviesFragment : Fragment() {
     private fun getMovies() {
         val movieAdapter = MovieAdapter()
         binding.moviesList.adapter = movieAdapter
-        movieRepository.getMovies().observe(viewLifecycleOwner, Observer {
+        movieRepository.getMovies().observe(viewLifecycleOwner, {
             movieAdapter.submitList(it)
         })
     }

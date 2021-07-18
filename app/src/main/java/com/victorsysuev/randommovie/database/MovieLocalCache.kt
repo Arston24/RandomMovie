@@ -28,10 +28,14 @@ class MovieLocalCache(
     }
 
     fun addToFavorite(movie: Movie) {
-        movieDao.addToFavorite(movie)
+        ioExecutor.execute {
+            movieDao.addToFavorite(movie)
+        }
     }
 
     fun removeFromFavorite(id: Int) {
-        movieDao.removeFromFavorite(id)
+        ioExecutor.execute {
+            movieDao.removeFromFavorite(id)
+        }
     }
 }
